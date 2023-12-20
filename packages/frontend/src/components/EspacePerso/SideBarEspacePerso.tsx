@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './SideBarEspacePerso.module.css'
 
 interface SideBarEspacePersoProps {
-  selectedItem: number | null;
+  selectedItem: number | 0;
   onItemSelected: (index: number) => void;
 }
 

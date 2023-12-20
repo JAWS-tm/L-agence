@@ -1,0 +1,15 @@
+.burgerTitle{
+    display: flex;
+}
+
+.burger{
+    display: none;
+    width: 40px;
+    margin-right: 5%;
+}
+
+@media screen and (max-width: 768px) {
+    .burger{
+        display: block;
+    }
+}

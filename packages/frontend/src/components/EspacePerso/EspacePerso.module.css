@@ -1,4 +1,10 @@
 .espacePerso{
     margin-left: 23%;
-    margin-top: 12vh;
+    margin-top: 2vh;
+}
+
+@media screen and (max-width: 768px) {
+    .espacePerso{
+        margin-left: 5%;
+    }
 }

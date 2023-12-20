@@ -1,10 +1,14 @@
 import React from 'react';
 import styles from './DemandesEnCours.module.css'
+import Burger from '../Burger/Burger'
 
 const DemandesEnCours: React.FC = () => {
   return (
     <div>
-        Demandes en Cours
+      <div className={styles.burgerTitle}>
+        <Burger />
+        <h1>Demandes en Cours</h1>
+      </div>  
     </div>
   );
 };

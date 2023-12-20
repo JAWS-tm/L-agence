@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import SideBar from './SideBarEspacePerso'
 import styles from './EspacePerso.module.css'
+import SideBar from './SideBarEspacePerso'
 import InformationsPerso from './InformationsPerso/InformationsPerso';
 import EspaceLocataire from './EspaceLocataire/EspaceLocataire';
 import MesFavoris from './MesFavoris/MesFavoris';
