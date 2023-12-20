@@ -1,0 +1,37 @@
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato-Bold.ttf') format('ttf');
+}
+
+.sideBarBox{
+    position: fixed;
+    left: 0;
+    top: 10vh;
+    width: 20%;
+    min-height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f4;
+    color: #2D3E50;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+}
+
+.listSideBar{
+    list-style-type: none;
+    padding: 0;
+}
+
+.listSideBar li{
+    padding: 5%;
+    margin-bottom: 5%;
+    cursor: default;
+}
+
+.listSideBar li:hover{
+    background-color: #DCDCDC;
+    border: 1px solid grey;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+}
