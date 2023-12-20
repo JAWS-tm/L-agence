@@ -1,76 +1,40 @@
-import React from 'react';
+import React, {useState} from 'react';
 import SideBar from './SideBarEspacePerso'
-import NavBar from '../NavBar/NavBar'
 import styles from './EspacePerso.module.css'
+import InformationsPerso from './InformationsPerso/InformationsPerso';
+import EspaceLocataire from './EspaceLocataire/EspaceLocataire';
+import MesFavoris from './MesFavoris/MesFavoris';
+import DemandesEnCours from './DemandesEnCours/DemandesEnCours';
 
 const EspacePerso: React.FC = () => {
+
+  const [selectedItem, setSelectedItem] = useState(0);
+
+  const handleItemClick = (index: number) => {
+    setSelectedItem(index);
+  };
+
+  const renderComponent = () => {
+    switch (selectedItem) {
+      case 0:
+        return <InformationsPerso />;
+      case 1:
+        return <EspaceLocataire />;
+      case 2:
+        return <MesFavoris />;
+      case 3:
+        return <DemandesEnCours />;
+      default:
+        return <InformationsPerso />;
+    }
+  };
+
   return (
     <div>
-        <NavBar />
         <div className={styles.espacePerso}>
-            <SideBar />
+            <SideBar selectedItem={selectedItem} onItemSelected={handleItemClick}/>
             <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
-            </div>
-            <div>
-                <h1>Espace perso</h1>
+                {renderComponent()}
             </div>
         </div>
     </div>

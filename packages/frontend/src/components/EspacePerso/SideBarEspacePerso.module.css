@@ -29,9 +29,10 @@
     cursor: default;
 }
 
-.listSideBar li:hover{
+.listSideBar li:hover, .listSideBarPerm{
     background-color: #DCDCDC;
     border: 1px solid grey;
     border-left: none;
     border-radius: 0 5px 5px 0;
 }
+

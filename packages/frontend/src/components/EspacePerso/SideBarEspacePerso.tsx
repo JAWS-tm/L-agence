@@ -1,15 +1,25 @@
 import React from 'react';
 import styles from './SideBarEspacePerso.module.css'
 
-const SideBarEspacePerso: React.FC = () => {
+interface SideBarEspacePersoProps {
+  selectedItem: number | null;
+  onItemSelected: (index: number) => void;
+}
+
+const SideBarEspacePerso: React.FC<SideBarEspacePersoProps> = ({ selectedItem, onItemSelected }) => {
   return (
     <>
         <nav className={styles.sideBarBox}>
             <ul className={styles.listSideBar}>
-                <li>Informations personnelles</li>
-                <li>Mon espace locataire</li>
-                <li>Mes favoris</li>
-                <li>Mes demandes en cours</li>
+                {["Informations personnelles", "Mon espace locataire", "Mes favoris", "Mes demandes en cours"].map((item, index) => (
+                  <li
+                    key={index}
+                    className={index === selectedItem ? styles.listSideBarPerm : ''}
+                    onClick={() => onItemSelected(index)}
+                  >
+                    {item}
+                  </li>
+                ))}
             </ul>
         </nav> 
     </>
