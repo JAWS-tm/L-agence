@@ -7,8 +7,8 @@ import Navbar from './components/Navbar/Navbar.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Navbar />
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
       </Routes>
