@@ -9,15 +9,12 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "dev": "concurrently  -n server,client -c \"cyan.bold,green.bold\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd packages/backend && npm run dev",
+    "dev:frontend": "cd packages/frontend && npm run dev"
+  },
   "devDependencies": {
     "concurrently": "^8.2.2"
-  },
-  "scripts": {
-    "dev": "concurrently  -n server,client -c \"cyan.bold,green.bold\" \"npm run server\" \"npm run client\"",
-    "server": "cd packages/backend && npm run dev",
-    "client": "cd packages/frontend && npm run dev"
-  },
-  "dependencies": {
-    "react-router-dom": "^6.21.0"
   }
 }
