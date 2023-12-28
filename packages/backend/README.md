@@ -12,7 +12,16 @@ yarn
 
 ## Configuration
 
-Edit the `.env` file at the root of the project and fill it with the good values for your environment.
+Create the `.env` file at the root of the project and fill it with the following content:
+
+```bash
+# Database
+DB_HOST=localhost
+DB_PORT=3306
+DB_USERNAME=root
+DB_PASSWORD=
+DB_DATABASE=lagence
+```
 
 ## Usage
 
