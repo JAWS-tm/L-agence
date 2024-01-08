@@ -29,9 +29,12 @@ const register = async (req: Request, res: Response) => {
 
     if (query) {
       console.log('registered with success');
-      return res
-        .status(200)
-        .json({ status: 200, message: 'Resgisteration with success.' });
+      const token = crypto.randomBytes(16).toString('hex');
+      return res.status(200).json({
+        status: 200,
+        message: 'Resgisteration with success.',
+        token: token,
+      });
     }
   } else {
     return res
@@ -59,12 +62,12 @@ const login = async (req: Request, res: Response) => {
       });
 
     if (success) {
-      const token = crypto.randomBytes(16).toString('hex');
+      req.session.userId = user.id;
 
       console.log('user is authenticated');
       return res
         .status(200)
-        .json({ status: 200, message: 'user is authenticated', token: token });
+        .json({ status: 200, message: 'user is authenticated', user: user });
     } else {
       console.log('password doesn`t match');
       // We don't inform the user that the password is wrong which would mean the email is correct
