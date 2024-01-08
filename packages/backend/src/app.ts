@@ -1,6 +1,7 @@
 import express from 'express';
 // import logger from "morgan";
-// import cors from "cors";
+import cors from 'cors';
+import session from 'express-session';
 import appRouter from './routes';
 import { User } from './models/User';
 
@@ -11,7 +12,22 @@ const app = express();
 app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: 'http://localhost:5173',
+  })
+);
+app.use(
+  session({
+    secret: 'lagence',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+    },
+  })
+);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
