@@ -8,6 +8,7 @@ import EspacePerso from './components/EspacePerso/EspacePerso.tsx';
 import ProtectedRoute from './user/ProtectedRoute.tsx';
 import Login from './views/Login/Login.tsx';
 import Register from './views/Register/Register.tsx';
+import Profile from './views/Profile/Profile.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -19,14 +20,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        {/* <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              // <MyAccount /> for exemple
-            </ProtectedRoute>
-          }
-        /> */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
