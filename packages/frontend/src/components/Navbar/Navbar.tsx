@@ -14,7 +14,7 @@ const Navbar = (props: Props) => {
         <span className="item">Nos biens</span>
         <span className="item">Contact</span>
       </div>
-      <div className="user" onClick={() => navigate('/login')}>
+      <div className="user" onClick={() => navigate('/profile')}>
         <i className="fa-regular fa-user"></i>
         <span>Mon compte</span>
       </div>
