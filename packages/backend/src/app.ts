@@ -2,6 +2,7 @@ import express from 'express';
 // import logger from "morgan";
 // import cors from "cors";
 import appRouter from './routes';
+import { User } from './models/User';
 
 // Create Express server
 const app = express();

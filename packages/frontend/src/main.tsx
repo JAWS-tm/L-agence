@@ -8,8 +8,8 @@ import EspacePerso from './components/EspacePerso/EspacePerso.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Navbar />
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
       <Route path="/espaceperso" element={<EspacePerso />} />
