@@ -6,8 +6,8 @@ const EspaceLocataire: React.FC = () => {
   return (
     <div>
       <div className={styles.burgerTitle}>
-        <Burger />
-        <h1>Espace Locataire</h1>
+        <Burger handleBurgerClick={() => document.dispatchEvent(new Event('burgerClicked'))} />
+        <h1 className={styles.title}>Espace Locataire</h1>
       </div>
     </div>
   );

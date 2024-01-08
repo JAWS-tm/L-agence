@@ -6,8 +6,8 @@ const DemandesEnCours: React.FC = () => {
   return (
     <div>
       <div className={styles.burgerTitle}>
-        <Burger />
-        <h1>Demandes en Cours</h1>
+        <Burger handleBurgerClick={() => document.dispatchEvent(new Event('burgerClicked'))} />
+        <h1 className={styles.title}>Demandes en Cours</h1>
       </div>  
     </div>
   );

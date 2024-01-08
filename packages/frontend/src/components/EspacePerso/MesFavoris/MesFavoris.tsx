@@ -6,8 +6,8 @@ const MesFavoris: React.FC = () => {
   return (
     <div>
       <div className={styles.burgerTitle}>
-        <Burger />
-        <h1>Mes Favoris</h1>
+        <Burger handleBurgerClick={() => document.dispatchEvent(new Event('burgerClicked'))}/>
+        <h1 className={styles.title}>Mes Favoris</h1>
       </div>  
     </div>
   );
