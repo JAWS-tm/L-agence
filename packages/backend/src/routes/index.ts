@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import userRouter from './user.routes';
 import authRouter from './auth.routes';
+import contactRouter from './contact.routes';
 
 const appRouter = Router();
 
@@ -13,6 +14,10 @@ const appRoutes = [
   {
     path: '/auth',
     router: authRouter,
+  },
+  {
+    path: '/contact',
+    router: contactRouter,
   },
 ];
 
