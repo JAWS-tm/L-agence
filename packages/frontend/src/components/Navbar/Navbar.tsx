@@ -12,7 +12,7 @@ const Navbar = (props: Props) => {
       </div>
       <div className="links">
         <span className="item">Nos biens</span>
-        <span className="item">Contact</span>
+        <span className="item" onClick={() => navigate('/contact')}>Contact</span>
       </div>
       <div className="user" onClick={() => navigate('/profile')}>
         <i className="fa-regular fa-user"></i>

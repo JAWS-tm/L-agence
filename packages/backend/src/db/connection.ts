@@ -9,7 +9,7 @@ const AppDataSource = new DataSource({
   port: (process.env.DB_PORT ?? 3306) as number,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME ?? 'lagence',
+  database: process.env.DB_DATABASE ?? 'lagence',
   synchronize: process.env.NODE_ENV === 'production' ? false : true,
   logging: false,
   entities: ['src/models/*.ts'],

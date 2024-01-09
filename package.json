@@ -16,5 +16,8 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "mariadb": "^3.2.3"
   }
 }
