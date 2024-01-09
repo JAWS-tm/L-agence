@@ -52,8 +52,9 @@ const Contact: React.FC = () => {
         <h1 className={styles.titleContact}>Contact</h1>
         <form className={styles.contactForm} onSubmit={handleSubmit}>
         <div>
-            <label htmlFor="email">Mail :</label>
+            <label className={styles.labelForm} htmlFor="email">Mail :</label>
             <input
+            className={styles.inputForm}
             type="email"
             id="email"
             name="email"
@@ -65,6 +66,7 @@ const Contact: React.FC = () => {
         <div>
             <label htmlFor="subject">Objet :</label>
             <input
+            className={styles.inputForm}
             type="text"
             id="subject"
             name="subject"
@@ -76,6 +78,7 @@ const Contact: React.FC = () => {
         <div>
             <label htmlFor="message">Message :</label>
             <textarea
+            className={styles.textareaForm}
             id="message"
             name="message"
             value={formData.message}
@@ -83,7 +86,7 @@ const Contact: React.FC = () => {
             required
             />
         </div>
-        <button type="submit">Envoyer</button>
+        <button className={styles.buttonForm} type="submit">Envoyer</button>
         </form>
     </div>
   );
