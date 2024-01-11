@@ -1,9 +1,13 @@
 :root {
-  --primaryColor: ;
-  --secondaryColor: ;
-  --textColor: ;
-  --backgroundColor: ;
-  --onBackgroundColor: ;
+  --primaryColor: #ffa920;
+  --onPrimaryColor: #fff;
+  --secondaryColor: #fff5e0;
+  --textColor: #1c1c1e;
+  --secondaryTextColor: #8c8c8c;
+  --borderColor: #e5e5ea;
+  --backgroundColor: #fff;
+  --secondaryBackground: #f7f7f7;
+  --darkColor: #1c1c1e;
 }
 
 * {
@@ -12,4 +16,8 @@
   box-sizing: border-box;
   font-family: 'DM Sans', '';
   text-decoration: none;
+}
+
+.content {
+  padding: 30px;
 }
