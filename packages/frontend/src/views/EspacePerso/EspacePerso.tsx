@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
-import styles from './EspacePerso.module.css'
-import SideBar from './SideBarEspacePerso'
+import React, { useState } from 'react';
+import styles from './EspacePerso.module.css';
+import SideBar from './components/SideBar/SideBarEspacePerso';
 import InformationsPerso from './InformationsPerso/InformationsPerso';
 import EspaceLocataire from './EspaceLocataire/EspaceLocataire';
 import MesFavoris from './MesFavoris/MesFavoris';
 import DemandesEnCours from './DemandesEnCours/DemandesEnCours';
 
 const EspacePerso: React.FC = () => {
-
   const [selectedItem, setSelectedItem] = useState(0);
 
   const handleItemClick = (index: number) => {
@@ -31,12 +30,10 @@ const EspacePerso: React.FC = () => {
 
   return (
     <div>
-        <div className={styles.espacePerso}>
-            <SideBar selectedItem={selectedItem} onItemSelected={handleItemClick}/>
-            <div>
-                {renderComponent()}
-            </div>
-        </div>
+      <div className={styles.espacePerso}>
+        <SideBar selectedItem={selectedItem} onItemSelected={handleItemClick} />
+        <div>{renderComponent()}</div>
+      </div>
     </div>
   );
 };
