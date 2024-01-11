@@ -1,51 +1,91 @@
-import { useState } from 'react';
+import styles from './styles.module.scss';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { UserCredentials, authService } from '../../services';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../../user/useUserStore';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
+import { z } from 'zod';
+import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 type Props = {};
+
+const loginValidation = z.object({
+  email: z
+    .string()
+    .min(1, { message: `L'email est requis.` })
+    .email({ message: `L'email n'est pas valide.` }),
+  password: z.string().min(1, { message: `Le mot de passe est requis.` }),
+});
+
+type LoginForm = z.infer<typeof loginValidation>;
 
 const Login = (props: Props) => {
   const navigate = useNavigate();
   const login = useUserStore((state) => state.login);
-  const [credentials, setCredentials] = useState<UserCredentials | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginValidation),
+  });
+  const [loading, setLoading] = useState(false);
 
-  const handleValuesChange = (field: keyof UserCredentials, value: string) => {
-    setCredentials((prevValues) => ({
-      ...prevValues!,
-      [field]: value,
-    }));
-  };
-
-  const handleLogin = async () => {
+  const handleLogin = async (credentials: UserCredentials) => {
     if (credentials) {
+      setLoading(true);
       const user = await authService.login(credentials);
+      setLoading(false);
       if (user) {
         login();
         navigate('/profile');
       } else {
-        // handle wron credentials
+        toast.error('Identifiants incorrects.');
       }
+    } else {
+      console.log('no credentials');
     }
   };
+
+  const onSubmit = handleSubmit((data) => {
+    return handleLogin(data);
+  });
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: 300 }}>
-      Login
-      <input
-        type="email"
-        autoComplete="email"
-        placeholder="email"
-        onChange={(e) => handleValuesChange('email', e.target.value)}
-        value={credentials?.email}
-      />
-      <input
-        type="password"
-        placeholder="mot de passe"
-        onChange={(e) => handleValuesChange('password', e.target.value)}
-        value={credentials?.password}
-      />
-      <button onClick={handleLogin}>Connexion</button>
-      <button onClick={() => navigate('/register')}>S'inscrire</button>
+    <div className={styles.login}>
+      <h1 className={styles.title}>Connexion</h1>
+
+      <form onSubmit={onSubmit} className={styles.form}>
+        <Input
+          type="email"
+          placeholder="Email"
+          {...register('email')}
+          errorMsg={errors.email?.message}
+        />
+        <Input
+          type="password"
+          placeholder="Mot de passe"
+          {...register('password')}
+          errorMsg={errors.password?.message}
+        />
+        <Button
+          type="primary"
+          actionType="submit"
+          value="Se connecter"
+          loading={loading}
+        />
+        <p className={styles.alreadyAccount}>
+          {' '}
+          Pas de compte ?{' '}
+          <span className={styles.link} onClick={() => navigate('/register')}>
+            Créer mon compte
+          </span>
+        </p>
+      </form>
+      <Toaster />
     </div>
   );
 };
