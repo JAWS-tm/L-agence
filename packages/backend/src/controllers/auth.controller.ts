@@ -4,18 +4,26 @@ import crypto from 'crypto';
 import { User } from '../models/User';
 import { userService } from '../services/user.service';
 import { classToPlain, instanceToPlain, serialize } from 'class-transformer';
+import { mailerService } from '../services/mail.service';
 
 const register = async (req: Request, res: Response) => {
-  const user: User = req.body;
+  const data: User = req.body;
 
-  if (!user.firstName || !user.lastName || !user.email || !user.password) {
+  if (!data.firstName || !data.lastName || !data.email || !data.password) {
     return res
       .status(400)
       .json({ status: 400, message: 'Some fields required are empty.' });
   }
 
+  const userExists = await userService.findByEmail(data.email);
+  if (userExists) {
+    return res
+      .status(400)
+      .json({ status: 400, message: "L'email est déjà utilisé." });
+  }
+
   await bcrypt
-    .hash(user.password, 5)
+    .hash(data.password, 5)
     .then((hash) => {
       user.password = hash;
     })
@@ -24,10 +32,17 @@ const register = async (req: Request, res: Response) => {
       return;
     });
 
-  const query = await userService.add(user);
+  const user = await userService.add(data);
 
-  if (query) {
+  if (user) {
     console.log('registered with success');
+
+    mailerService.sendMail({
+      email: user.email,
+      subject: "Bienvenue sur L'agence",
+      message: `Bonjour ${user.firstName} ${user.lastName},\n\nVotre compte a été créé avec succès. Vous pouvez désormais profiter des offres et postuler aux annonces.\n\nCordialement,\nL'équipe de L'agence.`,
+    });
+
     return res.status(200).json({
       status: 200,
       message: 'Successfully registered.',
