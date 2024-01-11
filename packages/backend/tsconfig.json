@@ -10,7 +10,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "outDir": "dist",
-    "baseUrl": "."
+    "strictNullChecks": true
+    // "baseUrl": "."
   },
   "include": ["src/**/*"],
   "ts-node": {
