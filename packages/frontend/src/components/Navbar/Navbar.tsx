@@ -18,7 +18,7 @@ const Navbar = (props: Props) => {
       <Button
         value="Mon compte"
         type="primary"
-        onClick={() => navigate('/profile')}
+        onClick={() => navigate('/my-account')}
       />
     </div>
   );

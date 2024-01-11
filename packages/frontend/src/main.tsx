@@ -18,12 +18,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <div className="content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/espaceperso" element={<EspacePerso />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/contact" element={<Contact />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />} />
+            <Route path="/my-account" element={<EspacePerso />} />
           </Route>
         </Routes>
       </div>

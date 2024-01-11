@@ -41,7 +41,7 @@ const Login = (props: Props) => {
       setLoading(false);
       if (user) {
         login();
-        navigate('/profile');
+        navigate('/my-account');
       } else {
         toast.error('Identifiants incorrects.');
       }

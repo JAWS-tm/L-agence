@@ -50,7 +50,7 @@ const Register = (props: Props) => {
       .then((res) => {
         if (res.data.user) {
           login();
-          navigate('/profile');
+          navigate('/my-account');
         } else {
           toast.error('Erreur.');
         }

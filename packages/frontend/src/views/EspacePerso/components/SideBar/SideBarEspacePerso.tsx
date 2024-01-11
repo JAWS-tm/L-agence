@@ -1,14 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import styles from './SideBarEspacePerso.module.css'
-import cross from '../../assets/cross.svg'
+import React, { useEffect, useState } from 'react';
+import styles from './SideBarEspacePerso.module.css';
+import cross from '../../../../assets/cross.svg';
 
 interface SideBarEspacePersoProps {
   selectedItem: number | 0;
   onItemSelected: (index: number) => void;
 }
 
-const SideBarEspacePerso: React.FC<SideBarEspacePersoProps> = ({ selectedItem, onItemSelected }) => {
-  const [isPhoneView, setIsPhoneView] = useState<boolean>(window.innerWidth <= 768);
+const SideBarEspacePerso: React.FC<SideBarEspacePersoProps> = ({
+  selectedItem,
+  onItemSelected,
+}) => {
+  const [isPhoneView, setIsPhoneView] = useState<boolean>(
+    window.innerWidth <= 768
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,20 +46,27 @@ const SideBarEspacePerso: React.FC<SideBarEspacePersoProps> = ({ selectedItem, o
 
   return (
     <>
-        <nav className={isPhoneView ? styles.sideBarBoxPhone : styles.sideBarBox}>
-          <img src={cross} className={styles.imgCross} onClick={handleCrossClick}></img>
-          <ul className={styles.listSideBar}>
-              {["Informations personnelles", "Mon espace locataire", "Mes favoris", "Mes demandes en cours"].map((item, index) => (
-                <li
-                  key={index}
-                  className={index === selectedItem ? styles.listSideBarPerm : ''}
-                  onClick={() => handleItemClick(index)}
-                >
-                  {item}
-                </li>
-              ))}
-          </ul>
-        </nav> 
+      <nav className={isPhoneView ? styles.sideBarBoxPhone : styles.sideBarBox}>
+        <img
+          src={cross}
+          className={styles.imgCross}
+          onClick={handleCrossClick}></img>
+        <ul className={styles.listSideBar}>
+          {[
+            'Informations personnelles',
+            'Mon espace locataire',
+            'Mes favoris',
+            'Mes demandes en cours',
+          ].map((item, index) => (
+            <li
+              key={index}
+              className={index === selectedItem ? styles.listSideBarPerm : ''}
+              onClick={() => handleItemClick(index)}>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </nav>
     </>
   );
 };
