@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styles from './SideBarEspacePerso.module.css';
 import cross from '../../../../assets/cross.svg';
+import Button from '../../../../components/Button/Button';
+import useUserStore from '../../../../user/useUserStore';
+import { useNavigate } from 'react-router-dom';
 
 interface SideBarEspacePersoProps {
   selectedItem: number | 0;
@@ -14,6 +17,8 @@ const SideBarEspacePerso: React.FC<SideBarEspacePersoProps> = ({
   const [isPhoneView, setIsPhoneView] = useState<boolean>(
     window.innerWidth <= 768
   );
+  const { logout } = useUserStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -44,6 +49,10 @@ const SideBarEspacePerso: React.FC<SideBarEspacePersoProps> = ({
     setIsPhoneView(false);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
   return (
     <>
       <nav className={isPhoneView ? styles.sideBarBoxPhone : styles.sideBarBox}>
@@ -66,6 +75,13 @@ const SideBarEspacePerso: React.FC<SideBarEspacePersoProps> = ({
             </li>
           ))}
         </ul>
+        <Button
+          type="secondary"
+          value="Se déconnecter"
+          icon={<i className="fa-solid fa-arrow-right-from-bracket"></i>}
+          className={styles.logoutButton}
+          onClick={handleLogout}
+        />
       </nav>
     </>
   );

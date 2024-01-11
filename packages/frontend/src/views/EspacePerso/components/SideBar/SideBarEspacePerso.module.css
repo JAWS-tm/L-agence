@@ -1,70 +1,74 @@
 @font-face {
-    font-family: 'Lato';
-    src: url('../fonts/Lato-Bold.ttf') format('ttf');
+  font-family: 'Lato';
+  src: url('../fonts/Lato-Bold.ttf') format('ttf');
 }
 
-.sideBarBox{
-    position: fixed;
+.sideBarBox {
+  position: fixed;
+  left: 0;
+  top: 10vh;
+  width: 20%;
+  min-height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f4f4;
+  color: #2d3e50;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+}
+.sideBarBoxPhone {
+  display: none;
+}
+
+.listSideBar {
+  list-style-type: none;
+  padding: 0;
+}
+
+.listSideBar li {
+  padding: 5%;
+  margin-bottom: 5%;
+  cursor: default;
+}
+
+.listSideBar li:hover,
+.listSideBarPerm {
+  background-color: #dcdcdc;
+  border: 1px solid grey;
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+}
+
+.imgCross {
+  display: none;
+}
+
+.logoutButton {
+  position: relative;
+  bottom: 0;
+}
+@media screen and (max-width: 768px) {
+  .sideBarBox {
+    display: none;
+  }
+  .sideBarBoxPhone {
+    position: absolute;
     left: 0;
     top: 10vh;
-    width: 20%;
+    width: 90%;
     min-height: 100vh;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     background-color: #f4f4f4;
-    color: #2D3E50;
+    color: #2d3e50;
     font-family: 'Lato', sans-serif;
     font-weight: bold;
+  }
+  .imgCross {
+    display: block;
+    margin: 3% 3%;
+    width: 30px;
+  }
 }
-.sideBarBoxPhone{
-    display: none;
-}
-
-.listSideBar{
-    list-style-type: none;
-    padding: 0;
-}
-
-.listSideBar li{
-    padding: 5%;
-    margin-bottom: 5%;
-    cursor: default;
-}
-
-.listSideBar li:hover, .listSideBarPerm{
-    background-color: #DCDCDC;
-    border: 1px solid grey;
-    border-left: none;
-    border-radius: 0 5px 5px 0;
-}
-
-.imgCross{
-    display: none;
-}
-
-@media screen and (max-width: 768px) {
-    .sideBarBox{
-        display: none;
-    }
-    .sideBarBoxPhone{
-        position: absolute;
-        left: 0;
-        top: 10vh;
-        width: 90%;
-        min-height: 100vh;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        background-color: #f4f4f4;
-        color: #2D3E50;
-        font-family: 'Lato', sans-serif;
-        font-weight: bold;
-    }
-    .imgCross{
-        display: block;
-        margin: 3% 3%;
-        width: 30px;
-    }
-}
-
