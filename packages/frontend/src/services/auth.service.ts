@@ -24,15 +24,7 @@ const login = async (credentials: UserCredentials) => {
 };
 
 const register = async (userInfo: UserRegisteration) => {
-  let token: string | null = null;
-  await Axios.post('/auth/register', userInfo)
-    .then((res) => {
-      token = res.data.token;
-    })
-    .catch((err) => {
-      console.log(err.response.data.message);
-    });
-  return token;
+  return Axios.post('/auth/register', userInfo);
 };
 
 export const authService = { login, register };
