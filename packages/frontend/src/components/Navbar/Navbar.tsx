@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import './navbar.scss';
+import Button from '../Button/Button';
 
 type Props = {};
 
@@ -14,10 +15,11 @@ const Navbar = (props: Props) => {
         <span className="item">Nos biens</span>
         <span className="item" onClick={() => navigate('/contact')}>Contact</span>
       </div>
-      <div className="user" onClick={() => navigate('/profile')}>
-        <i className="fa-regular fa-user"></i>
-        <span>Mon compte</span>
-      </div>
+      <Button
+        value="Mon compte"
+        type="primary"
+        onClick={() => navigate('/profile')}
+      />
     </div>
   );
 };

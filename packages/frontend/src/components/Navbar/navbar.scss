@@ -4,8 +4,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #f0f0f3;
-  background-color: #fff;
+  background-color: var(--backgroundColor);
+  box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.08);
+
   .logo {
     text-transform: uppercase;
     font-size: 1.4rem;
@@ -15,16 +16,15 @@
   }
 
   .item {
-    padding: 15px 10px;
-    margin: 0 20px;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
+    margin: 0 15px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.2s;
 
     &:hover {
-      background-color: #ccc;
+      color: var(--primaryColor);
     }
   }
 
