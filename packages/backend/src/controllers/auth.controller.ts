@@ -17,9 +17,10 @@ const register = async (req: Request, res: Response) => {
 
   const userExists = await userService.findByEmail(data.email);
   if (userExists) {
-    return res
-      .status(400)
-      .json({ status: 400, message: "L'email est déjà utilisé." });
+    return res.status(409).json({
+      status: 409,
+      message: 'User already created.',
+    });
   }
 
   await bcrypt
