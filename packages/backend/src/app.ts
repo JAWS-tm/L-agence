@@ -4,12 +4,15 @@ import cors from 'cors';
 import session from 'express-session';
 import appRouter from './routes';
 import { User } from './models/User';
+import { errorHandler } from './utils/error';
+import morgan from 'morgan';
 
 // Create Express server
 const app = express();
 
 // app.use(logger("dev"));
 app.set('port', process.env.PORT || 3000);
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
@@ -38,5 +41,7 @@ app.get('/', (req, res) => {
  */
 
 app.use('/api/', appRouter);
+
+app.use(errorHandler);
 
 export default app;
