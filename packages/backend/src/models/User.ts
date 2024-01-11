@@ -1,4 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  CreateDateColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Property } from './Poperty';
+import { Exclude, instanceToPlain } from 'class-transformer';
 
 @Entity()
 export class User extends BaseEntity {
@@ -11,9 +21,26 @@ export class User extends BaseEntity {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
+
+  @Column({ default: 'user', enum: ['admin', 'user'], type: 'enum' })
+  role: 'admin' | 'user';
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @OneToOne(() => Property, (property) => property.tenant, {
+    nullable: true,
+  })
+  @JoinColumn()
+  rentedProperty: Property;
+
+  serialize() {
+    return instanceToPlain(this);
+  }
 }

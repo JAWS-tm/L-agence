@@ -1,17 +1,33 @@
-import { Request, NextFunction, Response } from 'express';
-import { userService } from 'src/services/user.service';
-import { UserRequest } from 'src/types/express';
+import e, { Request, NextFunction, Response } from 'express';
+import { userService } from '../services/user.service';
+import { UserRequest } from '../types/express';
 
 export async function isAuthenticated(
   req: UserRequest,
-  next: NextFunction,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) {
-  const user = await userService.findById(req.session.userId);
+  const userId = req.session.userId;
+  if (!userId) return res.sendStatus(401);
+  const user = await userService.findById(userId);
   if (!user) {
-    res.send(401);
+    res.sendStatus(401);
   } else {
     req.user = user;
-    return next();
+    next();
+  }
+}
+
+export async function isAdmin(
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+) {
+  const user = req.user;
+
+  if (user && user.role === 'admin') {
+    next();
+  } else {
+    res.sendStatus(403);
   }
 }
