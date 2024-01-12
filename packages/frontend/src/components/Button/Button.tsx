@@ -17,6 +17,7 @@ function Button(props: Props) {
     <button
       type={props.actionType ?? 'button'}
       onClick={!props.loading ? props.onClick : undefined}
+      disabled={props.loading}
       className={classNames(
         props.type === 'primary' ? styles.primary : styles.secondary,
         styles.button,
