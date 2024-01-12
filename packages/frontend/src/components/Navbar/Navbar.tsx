@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './navbar.scss';
 import Button from '../Button/Button';
 import logo from '../../assets/l-agence_logo.png';
@@ -9,15 +9,18 @@ const Navbar = (props: Props) => {
   const navigate = useNavigate();
   return (
     <div className="navbar">
-      <div className="logo" onClick={() => navigate('/')}>
+      <Link to={'/'} className="logo">
         <img src={logo} alt="" />
+
         <span className="name">L'agence</span>
-      </div>
+      </Link>
       <div className="links">
-        <span className="item">Nos biens</span>
-        <span className="item" onClick={() => navigate('/contact')}>
+        <Link to={'/'} className="item">
+          Nos bien
+        </Link>
+        <Link to={'/contact'} className="item">
           Contact
-        </span>
+        </Link>
       </div>
       <Button
         value="Mon compte"
