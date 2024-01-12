@@ -27,11 +27,11 @@ const register = async (req: Request, res: Response) => {
   await bcrypt
     .genSalt(5)
     .then((salt) => {
-      return bcrypt.hash(user.password, salt);
+      return bcrypt.hash(data.password, salt);
     })
     .then((hash) => {
       console.log('Hash: ', hash);
-      user.password = hash;
+      data.password = hash;
     })
     .catch((err) => {
       console.error(err.message);
