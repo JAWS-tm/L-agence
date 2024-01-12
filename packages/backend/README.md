@@ -21,6 +21,9 @@ DB_PORT=3306
 DB_USERNAME=root
 DB_PASSWORD=
 DB_DATABASE=lagence
+
+MAILER_EMAIL=eseolagence@gmail.com
+MAILER_PASSWORD="idkl nueb jgrt gpaq "
 ```
 
 ## Usage
