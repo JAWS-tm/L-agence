@@ -6,9 +6,10 @@ const AxiosInstance = axios.create({
   baseURL: 'http://localhost:3000/api/',
   withCredentials: true,
 });
-const { isAuthenticated, logout } = useUserStore.getState();
 
 AxiosInstance.interceptors.response.use(null, (err) => {
+  const { isAuthenticated, logout } = useUserStore.getState();
+
   if (err.response?.status === 401 && isAuthenticated) {
     logout();
   }

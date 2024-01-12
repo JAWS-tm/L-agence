@@ -42,6 +42,7 @@ const register = async (req: Request, res: Response) => {
 
   if (user) {
     console.log('registered with success');
+    req.session.userId = user.id;
 
     mailerService.sendMail({
       email: user.email,
@@ -97,10 +98,15 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
+const logout = (req: UserRequest, res: Response) => {
+  req.session.destroy(() => {});
+  return res;
+};
+
 const getMe = (req: UserRequest, res: Response) => {
   console.log('user', req.user);
 
   return res.json({ status: 200, user: req.user });
 };
 
-export const authController = { register, login, getMe };
+export const authController = { register, login, logout, getMe };

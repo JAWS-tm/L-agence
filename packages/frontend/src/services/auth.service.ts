@@ -23,6 +23,10 @@ const login = async (credentials: UserCredentials) => {
   return user;
 };
 
+const logout = () => {
+  return Axios.post('/auth/logout');
+};
+
 const register = async (userInfo: UserRegisteration) => {
   return Axios.post('/auth/register', userInfo);
 };
@@ -35,4 +39,4 @@ const getMe = async (): Promise<User | null> => {
   else return null;
 };
 
-export const authService = { login, register, getMe };
+export const authService = { login, logout, register, getMe };
