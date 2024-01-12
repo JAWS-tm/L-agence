@@ -3,9 +3,8 @@ import { User } from './type';
 
 type UserStore = {
   user?: User;
-  setUser: (user: User) => void;
   isAuthenticated?: boolean;
-  login: () => void;
+  login: (user: User) => void;
   logout: () => void;
 };
 
@@ -13,8 +12,7 @@ const useUserStore = create<UserStore>((set) => ({
   user: undefined,
   isAuthenticated: false,
 
-  setUser: (user: User) => set({ user }),
-  login: () => set({ isAuthenticated: true }),
+  login: (user: User) => set({ user, isAuthenticated: true }),
   logout: () => {
     console.log('logout called');
 

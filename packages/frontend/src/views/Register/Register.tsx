@@ -1,5 +1,5 @@
 import styles from './styles.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import useUserStore from '../../user/useUserStore';
 import { useState } from 'react';
 import { UserRegisteration, authService } from '../../services';
@@ -35,7 +35,7 @@ type RegisterForm = z.infer<typeof registerValidation>;
 
 const Register = (props: Props) => {
   const navigate = useNavigate();
-  const login = useUserStore((state) => state.login);
+  const { login, isAuthenticated } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -49,7 +49,8 @@ const Register = (props: Props) => {
       .register(user)
       .then((res) => {
         if (res.data.user) {
-          login();
+          toast.success('Bienvenue ' + res.data.user.firstName);
+          login(res.data.user);
           navigate('/my-account');
         } else {
           toast.error('Erreur.');
@@ -66,6 +67,7 @@ const Register = (props: Props) => {
     return handleRegister(data);
   });
 
+  if (isAuthenticated) return <Navigate to={'/my-account'} />;
   return (
     <div className={styles.login}>
       <h1 className={styles.title}>Créer mon compte</h1>
@@ -115,7 +117,6 @@ const Register = (props: Props) => {
           </span>
         </p>
       </form>
-      <Toaster />
     </div>
   );
 };

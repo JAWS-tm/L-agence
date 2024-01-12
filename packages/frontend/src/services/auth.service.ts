@@ -12,7 +12,7 @@ export type UserRegisteration = {
 
 const login = async (credentials: UserCredentials) => {
   let user: User | null = null;
-  await Axios.post('/auth/login', credentials, { withCredentials: true })
+  await Axios.post('/auth/login', credentials)
     .then((res) => {
       console.log('auth performs with success. user : ', res.data.user);
       user = res.data.user;
@@ -27,4 +27,12 @@ const register = async (userInfo: UserRegisteration) => {
   return Axios.post('/auth/register', userInfo);
 };
 
-export const authService = { login, register };
+const getMe = async (): Promise<User | null> => {
+  const user = await Axios.get('/auth/getMe')
+    .then((res) => res.data.user)
+    .catch(() => null);
+  if (user) return user;
+  else return null;
+};
+
+export const authService = { login, register, getMe };

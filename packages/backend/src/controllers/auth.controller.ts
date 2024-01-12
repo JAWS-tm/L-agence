@@ -5,6 +5,7 @@ import { User } from '../models/User';
 import { userService } from '../services/user.service';
 import { classToPlain, instanceToPlain, serialize } from 'class-transformer';
 import { mailerService } from '../services/mail.service';
+import { UserRequest } from '../types/express';
 
 const register = async (req: Request, res: Response) => {
   const data: User = req.body;
@@ -24,8 +25,12 @@ const register = async (req: Request, res: Response) => {
   }
 
   await bcrypt
-    .hash(data.password, 5)
+    .genSalt(5)
+    .then((salt) => {
+      return bcrypt.hash(user.password, salt);
+    })
     .then((hash) => {
+      console.log('Hash: ', hash);
       user.password = hash;
     })
     .catch((err) => {
@@ -47,6 +52,7 @@ const register = async (req: Request, res: Response) => {
     return res.status(200).json({
       status: 200,
       message: 'Successfully registered.',
+      user: user,
     });
   }
 };
@@ -91,4 +97,10 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
-export const authController = { register, login };
+const getMe = (req: UserRequest, res: Response) => {
+  console.log('user', req.user);
+
+  return res.json({ status: 200, user: req.user });
+};
+
+export const authController = { register, login, getMe };

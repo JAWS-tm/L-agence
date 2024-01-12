@@ -2,7 +2,7 @@ import styles from './styles.module.scss';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserCredentials, authService } from '../../services';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import useUserStore from '../../user/useUserStore';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
@@ -24,7 +24,7 @@ type LoginForm = z.infer<typeof loginValidation>;
 
 const Login = (props: Props) => {
   const navigate = useNavigate();
-  const login = useUserStore((state) => state.login);
+  const { login, isAuthenticated } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -40,7 +40,7 @@ const Login = (props: Props) => {
       const user = await authService.login(credentials);
       setLoading(false);
       if (user) {
-        login();
+        login(user);
         navigate('/my-account');
       } else {
         toast.error('Identifiants incorrects.');
@@ -53,6 +53,7 @@ const Login = (props: Props) => {
   const onSubmit = handleSubmit((data) => {
     return handleLogin(data);
   });
+  if (isAuthenticated) return <Navigate to={'/my-account'} />;
 
   return (
     <div className={styles.login}>
@@ -85,7 +86,6 @@ const Login = (props: Props) => {
           </span>
         </p>
       </form>
-      <Toaster />
     </div>
   );
 };
