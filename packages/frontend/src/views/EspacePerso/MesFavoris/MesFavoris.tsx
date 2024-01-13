@@ -3,7 +3,7 @@ import styles from './MesFavoris.module.css';
 
 const MesFavoris: React.FC = () => {
   return (
-    <div>
+    <div className={styles.favourites}>
       <h1 className={styles.title}>Mes Favoris</h1>
     </div>
   );

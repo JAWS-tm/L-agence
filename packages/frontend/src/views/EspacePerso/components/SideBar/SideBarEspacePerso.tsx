@@ -34,11 +34,9 @@ const SideBarEspacePerso = (props: Props) => {
 
   return (
     <>
-      {isHidden && (
-        <i
-          className={classNames('fa-solid fa-bars', styles.burger)}
-          onClick={() => setIsHidden(false)}></i>
-      )}
+      <i
+        className={classNames('fa-solid fa-bars', styles.burger)}
+        onClick={() => setIsHidden(false)}></i>
       <div className={classNames(styles.sidebar, isHidden && styles.hidden)}>
         <i
           className={classNames('fa-solid fa-xmark', styles.closeSidebar)}

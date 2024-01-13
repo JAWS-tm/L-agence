@@ -3,7 +3,7 @@ import styles from './InformationsPerso.module.css';
 
 const InformationsPerso: React.FC = () => {
   return (
-    <div>
+    <div className={styles.persoInfo}>
       <h1 className={styles.title}>Informations personnelles</h1>
     </div>
   );

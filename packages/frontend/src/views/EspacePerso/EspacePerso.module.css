@@ -1,6 +1,6 @@
 .espacePerso {
   display: grid;
-  grid-template-columns: 320px 100%;
+  grid-template-columns: 320px auto;
   gap: 20px;
 }
 
