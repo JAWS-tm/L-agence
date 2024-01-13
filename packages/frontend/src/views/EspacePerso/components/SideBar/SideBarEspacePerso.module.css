@@ -1,74 +1,115 @@
-@font-face {
-  font-family: 'Lato';
-  src: url('../fonts/Lato-Bold.ttf') format('ttf');
+.sidebar {
+  width: 100%;
+  border: 1px solid var(--borderColor);
+  border-radius: 10px;
+  background-color: var(--secondaryBackground);
+  padding: 10px;
+
+  .profile {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+    position: relative;
+
+    .title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--secondaryTextColor);
+      margin-bottom: 10px;
+    }
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .icon {
+        width: 45px;
+      }
+      .name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--textColor);
+        text-transform: uppercase;
+      }
+    }
+    .logoutButton {
+      i {
+        margin: 0 5px;
+      }
+      font-size: 0.8rem;
+      font-weight: 200;
+      text-align: center;
+      color: var(--secondaryTextColor);
+      cursor: pointer;
+      transition: all 0.3s;
+      &:hover {
+        color: var(--primaryColor);
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 1px;
+      width: 100%;
+      background-color: var(--borderColor);
+    }
+  }
+  .tabs {
+    margin: 20px 0;
+    .tab {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      color: var(--textColor);
+      transition: all 0.3s;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--secondaryColor);
+      }
+    }
+    .selected {
+      color: var(--primaryColor);
+    }
+  }
 }
 
-.sideBarBox {
-  position: fixed;
-  left: 0;
-  top: 10vh;
-  width: 20%;
-  min-height: 100vh;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  background-color: #f4f4f4;
-  color: #2d3e50;
-  font-family: 'Lato', sans-serif;
-  font-weight: bold;
-}
-.sideBarBoxPhone {
+.burger,
+.closeSidebar {
   display: none;
 }
 
-.listSideBar {
-  list-style-type: none;
-  padding: 0;
-}
-
-.listSideBar li {
-  padding: 5%;
-  margin-bottom: 5%;
-  cursor: default;
-}
-
-.listSideBar li:hover,
-.listSideBarPerm {
-  background-color: #dcdcdc;
-  border: 1px solid grey;
-  border-left: none;
-  border-radius: 0 5px 5px 0;
-}
-
-.imgCross {
-  display: none;
-}
-
-.logoutButton {
-  position: relative;
-  bottom: 0;
-}
 @media screen and (max-width: 768px) {
-  .sideBarBox {
+  .burger,
+  .closeSidebar {
+    display: block;
+  }
+  .hidden {
     display: none;
   }
-  .sideBarBoxPhone {
+  .sidebar {
     position: absolute;
-    left: 0;
-    top: 10vh;
-    width: 90%;
-    min-height: 100vh;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    background-color: #f4f4f4;
-    color: #2d3e50;
-    font-family: 'Lato', sans-serif;
-    font-weight: bold;
-  }
-  .imgCross {
-    display: block;
-    margin: 3% 3%;
-    width: 30px;
+    width: 320px;
+    overflow: hidden;
+    transition: all 0.3s;
+
+    .closeSidebar {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      color: var(--textColor);
+      z-index: 1;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .closeSidebar:hover {
+      color: var(--primaryColor);
+      transform: rotate(90deg);
+    }
   }
 }

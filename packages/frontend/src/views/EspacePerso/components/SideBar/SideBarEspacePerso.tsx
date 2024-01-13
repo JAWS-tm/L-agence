@@ -1,88 +1,75 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './SideBarEspacePerso.module.css';
-import cross from '../../../../assets/cross.svg';
-import Button from '../../../../components/Button/Button';
 import useUserStore from '../../../../user/useUserStore';
 import { useNavigate } from 'react-router-dom';
+import avatar from '../../../../assets/avatar.png';
+import classNames from 'classnames';
 
-interface SideBarEspacePersoProps {
+type Props = {
   selectedItem: number | 0;
   onItemSelected: (index: number) => void;
-}
+};
 
-const SideBarEspacePerso: React.FC<SideBarEspacePersoProps> = ({
-  selectedItem,
-  onItemSelected,
-}) => {
-  const [isPhoneView, setIsPhoneView] = useState<boolean>(
-    window.innerWidth <= 768
-  );
-  const { logout } = useUserStore();
+const tabs = [
+  'Informations personnelles',
+  'Mon espace locataire',
+  'Mes favoris',
+  'Mes demandes en cours',
+];
+
+const SideBarEspacePerso = (props: Props) => {
+  const [isHidden, setIsHidden] = useState(true);
+  const { logout, user } = useUserStore();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsPhoneView(window.innerWidth <= 768);
-    };
-
-    const handleBurgerClick = () => {
-      setIsPhoneView(!isPhoneView);
-    };
-
-    window.addEventListener('resize', handleResize);
-    document.addEventListener('burgerClicked', handleBurgerClick);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      document.removeEventListener('burgerClicked', handleBurgerClick);
-    };
-  }, [isPhoneView]);
-
-  const handleItemClick = (index: number) => {
-    if (isPhoneView) {
-      setIsPhoneView(false);
-    }
-    onItemSelected(index);
-  };
-
-  const handleCrossClick = () => {
-    setIsPhoneView(false);
-  };
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
+
+  const handleTabClick = (index: number) => {
+    props.onItemSelected(index);
+    setIsHidden(true);
+  };
+
   return (
     <>
-      <nav className={isPhoneView ? styles.sideBarBoxPhone : styles.sideBarBox}>
-        <img
-          src={cross}
-          className={styles.imgCross}
-          onClick={handleCrossClick}></img>
-        <ul className={styles.listSideBar}>
-          {[
-            'Informations personnelles',
-            'Mon espace locataire',
-            'Mes favoris',
-            'Mes demandes en cours',
-          ].map((item, index) => (
+      {isHidden && (
+        <i
+          className={classNames('fa-solid fa-bars', styles.burger)}
+          onClick={() => setIsHidden(false)}></i>
+      )}
+      <div className={classNames(styles.sidebar, isHidden && styles.hidden)}>
+        <i
+          className={classNames('fa-solid fa-xmark', styles.closeSidebar)}
+          onClick={() => setIsHidden(true)}></i>
+        <div className={styles.profile}>
+          <p className={styles.title}>Profile</p>
+          <div className={styles.user}>
+            <img src={avatar} className={styles.icon} />
+            <p className={styles.name}>
+              {user?.firstName} {user?.lastName}
+            </p>
+          </div>
+          <p className={styles.logoutButton} onClick={handleLogout}>
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>Se
+            déconnecter
+          </p>
+        </div>
+        <ul className={styles.tabs}>
+          {tabs.map((tab, i) => (
             <li
-              key={index}
-              className={index === selectedItem ? styles.listSideBarPerm : ''}
-              onClick={() => handleItemClick(index)}>
-              {item}
+              className={classNames(
+                styles.tab,
+                props.selectedItem === i && styles.selected
+              )}
+              key={i}
+              onClick={() => handleTabClick(i)}>
+              {tab}
             </li>
           ))}
         </ul>
-        <Button
-          type="secondary"
-          value="Se déconnecter"
-          icon={<i className="fa-solid fa-arrow-right-from-bracket"></i>}
-          className={styles.logoutButton}
-          onClick={handleLogout}
-        />
-      </nav>
+      </div>
     </>
   );
 };

@@ -1,10 +1,11 @@
-.espacePerso{
-    margin-left: 23%;
-    margin-top: 2vh;
+.espacePerso {
+  display: grid;
+  grid-template-columns: 320px 100%;
+  gap: 20px;
 }
 
 @media screen and (max-width: 768px) {
-    .espacePerso{
-        margin-left: 5%;
-    }
+  .espacePerso {
+    display: inline;
+  }
 }

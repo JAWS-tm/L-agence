@@ -13,7 +13,7 @@ const EspacePerso: React.FC = () => {
     setSelectedItem(index);
   };
 
-  const renderComponent = () => {
+  const renderTabView = () => {
     switch (selectedItem) {
       case 0:
         return <InformationsPerso />;
@@ -29,11 +29,9 @@ const EspacePerso: React.FC = () => {
   };
 
   return (
-    <div>
-      <div className={styles.espacePerso}>
-        <SideBar selectedItem={selectedItem} onItemSelected={handleItemClick} />
-        <div>{renderComponent()}</div>
-      </div>
+    <div className={styles.espacePerso}>
+      <SideBar selectedItem={selectedItem} onItemSelected={handleItemClick} />
+      {renderTabView()}
     </div>
   );
 };

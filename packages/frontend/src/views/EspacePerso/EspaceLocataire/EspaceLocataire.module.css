@@ -1,9 +1,5 @@
-.burgerTitle{
-    display: flex;
-}
-
 @media screen and (max-width: 768px) {
-    .title{
-        font-size: x-large;
-    }
+  .title {
+    font-size: 1.2rem;
+  }
 }
