@@ -23,6 +23,7 @@ function Button(props: Props) {
         styles.button,
         props.className
       )}>
+      {props.icon && <div className={styles.icon}>{props.icon}</div>}
       <p style={props.loading ? { opacity: 0 } : { opacity: 1 }}>
         {props.value}
       </p>
@@ -31,7 +32,6 @@ function Button(props: Props) {
           <Lotties type="loading" width="45px" />
         </div>
       )}
-      {props.icon && <div className={styles.icon}>{props.icon}</div>}
     </button>
   );
 }

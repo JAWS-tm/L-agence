@@ -1,5 +1,7 @@
 .button {
   position: relative;
+  display: flex;
+  align-items: center;
   padding: 16px 18px;
   border: 1px solid transparent;
   border-radius: 10px;
@@ -16,10 +18,16 @@
     margin-top: 2px;
   }
   .icon {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+    margin: 0 16px 0 5px;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      right: -8px;
+      width: 1px;
+      height: 100%;
+      background-color: var(--borderColor);
+    }
   }
 }
 
