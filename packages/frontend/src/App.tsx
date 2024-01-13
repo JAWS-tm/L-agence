@@ -1,5 +1,5 @@
 import './index.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Home from './views/Home/Home.tsx';
 import Navbar from './components/Navbar/Navbar.tsx';
 import EspacePerso from './views/EspacePerso/EspacePerso.tsx';
@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { authService } from './services/auth.service.ts';
 import useUserStore from './user/useUserStore.ts';
 import { Toaster } from 'react-hot-toast';
+import NotFound from './views/NotFound/NotFound.tsx';
 
 const App = () => {
   const [loadingUser, setLoadingUser] = useState(true);
@@ -34,6 +35,8 @@ const App = () => {
         ) : (
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="*" element={<Navigate to={'/404'} />} />
+            <Route path="/404" element={<NotFound />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/contact" element={<Contact />} />
