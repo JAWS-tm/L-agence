@@ -1,7 +1,7 @@
 // Property Service
 
 import { DeepPartial } from 'typeorm';
-import { Property, PropertyType } from '../models/Poperty';
+import { Property, PropertyType } from '../models/Property';
 import { AppError } from '../utils/error';
 
 const add = async (property: DeepPartial<Property>) => {

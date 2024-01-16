@@ -1,10 +1,11 @@
 import { Router } from 'express';
+import { isAuthenticated } from '../middleware/auth.middleware';
+import { userController } from '../controllers/user.controller';
 
 const userRouter = Router();
 
-// Routes examples for user
-// requireUser is a middleware to check if user is logged in (not implemented yet)
-// userRouter.get("/", requireUser, getUserData);
-// userRouter.patch("/", requireUser, validateRequest(updateSchema), updateUser);
+userRouter.post('/favourites', isAuthenticated, userController.addFavourites);
+userRouter.delete('/favourites/:propertyId', isAuthenticated, userController.removeFavourites);
+userRouter.get('/favourites',isAuthenticated, userController.getFavourites)
 
 export default userRouter;
