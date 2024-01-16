@@ -20,7 +20,7 @@
 }
 
 .filtersButton {
-  display: none;
+  visibility: hidden;
 }
 
 @media screen and (max-width: $mobileSize) {
@@ -29,6 +29,7 @@
   }
 
   .filtersButton {
-    display: block;
+    // display: block;
+    visibility: visible;
   }
 }

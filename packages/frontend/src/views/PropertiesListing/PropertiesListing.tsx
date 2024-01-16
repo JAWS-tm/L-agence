@@ -11,7 +11,7 @@ const breadcrumbPaths = [
 ];
 
 const PropertiesListing = () => {
-  const [isSidebarShown, setIsSidebarShown] = useState(true);
+  const [isSidebarShown, setIsSidebarShown] = useState(false);
 
   return (
     <>

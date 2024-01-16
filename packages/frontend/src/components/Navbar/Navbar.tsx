@@ -24,6 +24,7 @@ const Navbar = () => {
         value="Mon compte"
         type="primary"
         onClick={() => navigate('/my-account')}
+        icon={<i className="fa-solid fa-user" />}
       />
     </div>
   );

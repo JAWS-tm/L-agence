@@ -8,13 +8,10 @@
     color: var(--textColor);
   }
 
-  .content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1600px;
-    height: 100%;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1600px;
 
   .logo {
     text-transform: uppercase;
@@ -44,6 +41,7 @@
 
     &:hover {
       color: var(--primaryColor);
+      text-decoration: none;
     }
   }
 

@@ -1,4 +1,3 @@
-import './index.css';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Home from './views/Home/Home.tsx';
 import Navbar from './components/Navbar/Navbar.tsx';
@@ -13,6 +12,7 @@ import { authService } from './services/auth.service.ts';
 import useUserStore from './user/useUserStore.ts';
 import { Toaster } from 'react-hot-toast';
 import NotFound from './views/NotFound/NotFound.tsx';
+import PropertiesListing from './views/PropertiesListing/PropertiesListing.tsx';
 
 const App = () => {
   const [loadingUser, setLoadingUser] = useState(true);
