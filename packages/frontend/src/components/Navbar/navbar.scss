@@ -1,14 +1,19 @@
 .navbar {
   padding: 10px 30px;
   height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   background-color: var(--backgroundColor);
   box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.08);
 
   a {
     color: var(--textColor);
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1600px;
+    height: 100%;
   }
 
   .logo {

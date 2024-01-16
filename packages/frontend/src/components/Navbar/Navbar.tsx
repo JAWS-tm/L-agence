@@ -3,9 +3,7 @@ import './navbar.scss';
 import Button from '../Button/Button';
 import logo from '../../assets/l-agence_logo.png';
 
-type Props = {};
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
   const navigate = useNavigate();
   return (
     <div className="navbar">
@@ -15,7 +13,7 @@ const Navbar = (props: Props) => {
         <span className="name">L'agence</span>
       </Link>
       <div className="links">
-        <Link to={'/'} className="item">
+        <Link to={'/properties'} className="item">
           Nos biens
         </Link>
         <Link to={'/contact'} className="item">

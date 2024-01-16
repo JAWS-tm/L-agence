@@ -9,6 +9,8 @@
   --secondaryBackground: #f7f7f7;
   --darkColor: #1c1c1e;
 }
+// SCSS variables
+$mobileSize: 680px;
 
 * {
   margin: 0;
@@ -16,6 +18,15 @@
   box-sizing: border-box;
   font-family: 'DM Sans', '';
   text-decoration: none;
+}
+
+a {
+  color: var(--primaryColor);
+
+  &:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
 }
 
 .content {
@@ -26,5 +37,7 @@
 @media screen and (max-width: 768px) {
   .content {
     padding: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
   }
 }
