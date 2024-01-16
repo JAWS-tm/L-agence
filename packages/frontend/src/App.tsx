@@ -1,5 +1,4 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import Home from './views/Home/Home.tsx';
 import Navbar from './components/Navbar/Navbar.tsx';
 import EspacePerso from './views/EspacePerso/EspacePerso.tsx';
 import ProtectedRoute from './user/ProtectedRoute.tsx';
@@ -17,9 +16,7 @@ const App = () => {
       <Navbar />
       <div className="content">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<Navigate to={'/404'} />} />
-          <Route path="/404" element={<NotFound />} />
+          <Route path="/" element={<Navigate to="/properties" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/contact" element={<Contact />} />
@@ -29,6 +26,9 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/my-account" element={<EspacePerso />} />
           </Route>
+
+          <Route path="*" element={<Navigate to={'/404'} />} />
+          <Route path="/404" element={<NotFound />} />
         </Routes>
         <Toaster />
       </div>
