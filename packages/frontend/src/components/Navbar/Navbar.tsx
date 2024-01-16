@@ -16,7 +16,7 @@ const Navbar = (props: Props) => {
       </Link>
       <div className="links">
         <Link to={'/'} className="item">
-          Nos bien
+          Nos biens
         </Link>
         <Link to={'/contact'} className="item">
           Contact
