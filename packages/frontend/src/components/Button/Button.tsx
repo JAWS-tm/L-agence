@@ -10,6 +10,7 @@ type Props = {
   icon?: React.ReactNode;
   className?: string;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
 function Button(props: Props) {
@@ -17,7 +18,7 @@ function Button(props: Props) {
     <button
       type={props.actionType ?? 'button'}
       onClick={!props.loading ? props.onClick : undefined}
-      disabled={props.loading}
+      disabled={props.loading || props.disabled}
       className={classNames(
         props.type === 'primary' ? styles.primary : styles.secondary,
         styles.button,

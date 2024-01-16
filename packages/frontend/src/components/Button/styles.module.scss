@@ -12,6 +12,11 @@
   cursor: pointer;
   transition: all 0.3s;
 
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
   .loading {
     position: absolute;
     left: 50%;
@@ -22,28 +27,20 @@
   .icon {
     margin: 0 16px 0 5px;
     position: relative;
-    // &::after {
-    //   content: '';
-    //   position: absolute;
-    //   right: -8px;
-    //   width: 1px;
-    //   height: 100%;
-    //   background-color: var(--borderColor);
-    // }
   }
 }
 
 .primary {
   background-color: var(--primaryColor);
   color: var(--onPrimaryColor);
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--darkColor);
   }
 }
 .secondary {
   background-color: var(--secondaryColor);
   color: var(--textColor);
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--primaryColor);
     color: var(--onPrimaryColor);
   }
