@@ -114,6 +114,27 @@
     width: 100%;
   }
 
+  .undoButton {
+    width: 100%;
+    margin-top: 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 600;
+    color: var(--secondaryTextColor);
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: var(--textColor);
+    }
+  }
+
   // Slider
   .track {
     width: 100%;

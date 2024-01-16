@@ -7,12 +7,63 @@ import {
   addPropertySchema,
   updatePropertySchema,
 } from '../validation/property';
+import { deleteFiles } from '../utils/file';
+import { Property } from '../models/Property';
+
+const MAX_FILE_SIZE = 1024 * 1024 * 5;
+const ACCEPTED_IMAGE_MIME_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
+const ACCEPTED_IMAGE_TYPES = ['jpeg', 'jpg', 'png', 'webp'];
 
 const create = async (req: UserRequest, res: Response) => {
+  if (!req.files) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Minimum one image is required',
+    });
+  }
+
+  // Validate files types and sizes
+  const images = req.files as Express.Multer.File[];
+
+  for (const image of images) {
+    if (!ACCEPTED_IMAGE_MIME_TYPES.includes(image.mimetype)) {
+      deleteFiles(images);
+      return res.status(400).json({
+        status: 400,
+        message: `File ${
+          image.originalname
+        } is not an image. Accepted formats are: ${ACCEPTED_IMAGE_TYPES.join(
+          ', '
+        )}`,
+      });
+    }
+
+    if (image.size > MAX_FILE_SIZE) {
+      deleteFiles(images);
+      return res.status(400).json({
+        status: 400,
+        message: `File ${image.originalname} is too big. Max size is ${
+          MAX_FILE_SIZE / 1024 / 1024
+        }MB`,
+      });
+    }
+  }
+
   const data = validateBody(addPropertySchema, req, res);
   if (!data) return;
 
-  const property = await propertyService.add(data);
+  const newProperty = Property.create(data);
+  newProperty.imagesPaths = images.map((image) =>
+    image.path.replace('public/', '')
+  );
+
+  const property = await propertyService.add(newProperty);
+
   res.status(201).json({ status: 201, property });
 };
 

@@ -5,3 +5,6 @@ build/
 tmp/
 temp/
 .env
+
+public/
+!public/.gitkeep

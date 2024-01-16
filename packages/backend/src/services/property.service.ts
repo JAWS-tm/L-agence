@@ -9,7 +9,8 @@ const add = async (property: DeepPartial<Property>) => {
     throw new Error('Cannot create a property with an id');
   }
   const insertedProp = await Property.insert(property);
-  return { id: insertedProp.identifiers[0].id, ...property };
+
+  return await findById(insertedProp.identifiers[0].id);
 };
 
 const update = async (property: DeepPartial<Property>) => {
@@ -39,4 +40,11 @@ const findAll = async () => {
   });
 };
 
-export const propertyService = { add, update, remove, findAll };
+const findById = async (id: string) => {
+  return await Property.findOne({
+    where: { id },
+    relations: ['tenant'],
+  });
+};
+
+export const propertyService = { add, update, remove, findAll, findById };

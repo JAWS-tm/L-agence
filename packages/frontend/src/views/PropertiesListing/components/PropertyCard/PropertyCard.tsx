@@ -1,45 +1,79 @@
 import styles from './PropertyCard.module.scss';
-import HomeImg from '../../../../assets/DreamHome.webp';
+import PlaceholderImg from '../../../../assets/placeholder_image.jpg';
+import { Property, PropertyType } from '../../../../services/property.type';
+import { CONFIG } from '../../../../utils/config';
+import { useEffect, useState } from 'react';
 
-type Props = {};
+type Props = {
+  property: Property;
+};
 
-const PropertyCard = (props: Props) => {
+const typeTranslation: {
+  [K in PropertyType]: string;
+} = {
+  apartment: 'Appartement',
+  house: 'Maison',
+};
+
+const PropertyCard = ({ property }: Props) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [image, setImage] = useState('');
+
+  useEffect(() => {
+    if (!property.imagesPaths.length) {
+      setImage(PlaceholderImg);
+      return;
+    }
+    setImage(CONFIG.PUBLIC_CONTENT_URL + '/' + property.imagesPaths[0]);
+  }, [property.imagesPaths]);
+
   return (
     <div className={styles.card}>
       <div className={styles.imageLayout}>
         <div className={styles.image}>
-          <img src={HomeImg} alt="Home" />
+          <img
+            src={image}
+            alt="Home preview"
+            onError={() => setImage(PlaceholderImg)}
+          />
         </div>
-        <div className={styles.imageBottomSection}>
-          <span className={styles.price}>680€</span>
 
-          <div className={styles.favoriteIcon}>
-            <i className="fa-regular fa-heart"></i>
+        <div className={styles.imageBottomSection}>
+          <span className={styles.price}>{property.price}€</span>
+
+          <div
+            className={styles.favoriteIcon}
+            onClick={() => setIsFavorite(!isFavorite)}>
+            <i
+              className={`${isFavorite ? 'fa-solid' : 'fa-regular'} fa-heart`}
+            />
           </div>
         </div>
       </div>
 
-      <h1 className={styles.name}>T2 - La Doutre</h1>
+      <h1 className={styles.name}>{property.name}</h1>
       <div className={styles.location}>
         <i className="fa-solid fa-location-dot"></i>
 
-        <span>5 rue Saint-Jacques, Angers</span>
+        <span>{property.address}</span>
       </div>
 
       <div className={styles.infoGroup}>
         <div className={styles.info}>
           <i className="fa-solid fa-house" />
-          <span>1 chambre</span>
+          <span>
+            {property.roomsCount} chambre{property.roomsCount > 1 ? 's' : ''}
+          </span>
         </div>
 
         <div className={styles.info}>
           <i className="fa-solid fa-building" />
-          <span>Maison</span>
+          <span>{typeTranslation[property.type]}</span>
         </div>
 
         <div className={styles.info}>
           <i className="fa-solid fa-expand" />
-          <span>60m²</span>
+          <span>{property.surface}m²</span>
         </div>
       </div>
     </div>
