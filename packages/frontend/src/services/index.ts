@@ -1,9 +1,10 @@
 import axios from 'axios';
 import useUserStore from '../user/useUserStore';
 import toast from 'react-hot-toast';
+import { CONFIG } from '../utils/config';
 
 export const axiosClient = axios.create({
-  baseURL: 'http://localhost:3000/api/',
+  baseURL: CONFIG.API_URL,
   withCredentials: true,
 });
 
