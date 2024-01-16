@@ -6,6 +6,8 @@ import appRouter from './routes';
 import { User } from './models/User';
 import { errorHandler } from './utils/error';
 import morgan from 'morgan';
+import compression from 'compression';
+import helmet from 'helmet';
 
 // Create Express server
 const app = express();
@@ -31,6 +33,8 @@ app.use(
     },
   })
 );
+app.use(helmet({}));
+app.use(compression());
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
