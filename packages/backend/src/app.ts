@@ -33,6 +33,7 @@ app.use(
     },
   })
 );
+app.use(express.static('public'));
 app.use(helmet({}));
 app.use(compression());
 
@@ -45,7 +46,6 @@ app.get('/', (req, res) => {
  */
 
 app.use('/api/', appRouter);
-
 app.use(errorHandler);
 
 export default app;
