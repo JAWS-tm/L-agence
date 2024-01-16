@@ -11,7 +11,6 @@ const InformationsPerso: React.FC = () => {
   const dataStr = user?.createdAt.toString();
 
   const informations: { label: string; value: keyof User }[] = [
-    { label: 'Identifiant', value: 'id' },
     { label: 'Prénom', value: 'firstName' },
     { label: 'Nom', value: 'lastName' },
     { label: 'Email', value: 'email' },
