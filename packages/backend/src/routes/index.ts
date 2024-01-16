@@ -21,7 +21,7 @@ const appRoutes = [
     router: contactRouter,
   },
   {
-    path: '/property',
+    path: '/properties',
     router: propertyRouter,
   },
 ];

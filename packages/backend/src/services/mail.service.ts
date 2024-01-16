@@ -21,8 +21,8 @@ export const mailerService = {
       // Configurer le contenu de l'email
       const mailOptions = {
         from: MAIL,
-        to: MAIL,
-        replyTo: `${formData.email}`,
+        to: formData.email,
+        replyTo: formData.email,
         subject: `${formData.subject}`,
         text: `${formData.message}`,
       };
