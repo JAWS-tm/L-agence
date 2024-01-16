@@ -38,12 +38,6 @@ const InformationsPerso: React.FC = () => {
           </p>
         )}
       </div>
-      <Button
-        type="primary"
-        value="Modifier"
-        icon={<i className="fa-regular fa-pen-to-square"></i>}
-        onClick={() => toast.error('Nike ta mère jai la flemme')}
-      />
     </div>
   );
 };
