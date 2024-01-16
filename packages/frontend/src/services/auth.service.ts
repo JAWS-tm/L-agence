@@ -1,5 +1,5 @@
 import { User } from '../user/type';
-import Axios from './index';
+import { axiosClient } from './index';
 
 export type UserCredentials = { email: string; password: string };
 export type UserRegisteration = {
@@ -12,7 +12,8 @@ export type UserRegisteration = {
 
 const login = async (credentials: UserCredentials) => {
   let user: User | null = null;
-  await Axios.post('/auth/login', credentials)
+  await axiosClient
+    .post('/auth/login', credentials)
     .then((res) => {
       console.log('auth performs with success. user : ', res.data.user);
       user = res.data.user;
@@ -24,15 +25,16 @@ const login = async (credentials: UserCredentials) => {
 };
 
 const logout = () => {
-  return Axios.post('/auth/logout');
+  return axiosClient.post('/auth/logout');
 };
 
 const register = async (userInfo: UserRegisteration) => {
-  return Axios.post('/auth/register', userInfo);
+  return axiosClient.post('/auth/register', userInfo);
 };
 
 const getMe = async (): Promise<User | null> => {
-  const user = await Axios.get('/auth/getMe')
+  const user = await axiosClient
+    .get('/auth/getMe')
     .then((res) => res.data.user)
     .catch(() => null);
   if (user) return user;
