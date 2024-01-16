@@ -7,23 +7,23 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   errorMsg?: string;
 };
 
-const Input = React.forwardRef<HTMLInputElement, Props>((props, ref) => {
-  return (
-    <div className={styles.inputContainer}>
-      <input
-        {...props}
-        ref={ref}
-        type={props.type}
-        value={props.value}
-        onChange={props.onChange}
-        placeholder={props.placeholder}
-        className={classNames(styles.input, props.errorMsg && styles.error)}
-      />
-      {props.errorMsg && (
-        <span className={styles.errorMsg}>{props.errorMsg}</span>
-      )}
-    </div>
-  );
-});
+const Input = React.forwardRef<HTMLInputElement, Props>(
+  ({ type, errorMsg, ...props }, ref) => {
+    return (
+      <div className={styles.inputContainer}>
+        <input
+          {...props}
+          ref={ref}
+          type={type}
+          value={props.value}
+          onChange={props.onChange}
+          placeholder={props.placeholder}
+          className={classNames(styles.input, errorMsg && styles.error)}
+        />
+        {errorMsg && <span className={styles.errorMsg}>{errorMsg}</span>}
+      </div>
+    );
+  }
+);
 
 export default Input;
