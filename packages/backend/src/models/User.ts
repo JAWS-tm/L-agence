@@ -6,8 +6,10 @@ import {
   CreateDateColumn,
   OneToOne,
   JoinColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
-import { Property } from './Poperty';
+import { Property } from './Property';
 import { Exclude, instanceToPlain } from 'class-transformer';
 
 @Entity()
@@ -39,6 +41,10 @@ export class User extends BaseEntity {
   })
   @JoinColumn()
   rentedProperty: Property;
+
+  @ManyToMany(() => Property)
+  @JoinTable()
+  favourites: Property[]
 
   serialize() {
     return instanceToPlain(this);

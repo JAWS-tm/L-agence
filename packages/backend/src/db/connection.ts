@@ -3,7 +3,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { User } from '../models/User';
-import { Property } from '../models/Poperty';
+import { Property } from '../models/Property';
 
 const AppDataSource = new DataSource({
   type: 'mariadb',
