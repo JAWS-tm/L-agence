@@ -13,3 +13,8 @@ export type Property = {
   type: PropertyType;
   // tenant: ;
 };
+
+export type Favorite = {
+  success: boolean;
+  message: string;
+};

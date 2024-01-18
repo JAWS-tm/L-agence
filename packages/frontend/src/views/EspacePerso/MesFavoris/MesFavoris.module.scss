@@ -1,0 +1,31 @@
+@import '../../../index.scss';
+
+.favourites {
+  .title {
+    text-align: center;
+    color: var(--textColor);
+  }
+}
+
+.propertiesGrid {
+  margin-top: 20px;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.message {
+  margin-top: 20px;
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
+@media screen and (max-width: $mobileSize) {
+  .propertiesGrid {
+    grid-template-columns: 1fr;
+  }
+  .title {
+    font-size: 1.2rem;
+  }
+}

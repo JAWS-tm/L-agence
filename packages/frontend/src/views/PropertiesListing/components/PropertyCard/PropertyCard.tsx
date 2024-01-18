@@ -1,6 +1,7 @@
 import styles from './PropertyCard.module.scss';
 import PlaceholderImg from '../../../../assets/placeholder_image.jpg';
 import { Property, PropertyType } from '../../../../services/property.type';
+import { propertyService } from '../../../../services/property.service';
 import { CONFIG } from '../../../../utils/config';
 import { useEffect, useState } from 'react';
 
@@ -20,12 +21,40 @@ const PropertyCard = ({ property }: Props) => {
   const [image, setImage] = useState('');
 
   useEffect(() => {
+    const fetchUserFavorites = async () => {
+      const response = await propertyService.getUserFavorites();
+
+      console.log('userFavorites:', response.data);
+      console.log('property.id:', property.id);
+
+      if (Array.isArray(response.data)) {
+        const isPropertyFavorite = response.data.some((favorite: { id: string }) => {
+          console.log('favorite.id:', favorite.id);
+          return favorite.id === property.id;
+        });
+        console.log('isPropertyFavorite:', isPropertyFavorite);
+
+        setIsFavorite(isPropertyFavorite);
+      }
+    };
+
+    fetchUserFavorites();
+
     if (!property.imagesPaths.length) {
       setImage(PlaceholderImg);
       return;
     }
     setImage(CONFIG.PUBLIC_CONTENT_URL + '/' + property.imagesPaths[0]);
   }, [property.imagesPaths]);
+
+
+
+const handleFavoriteClick = async () => {
+  const response = await propertyService.toggleFavorite(property.id, isFavorite);
+  if (response.success) {
+    setIsFavorite(!isFavorite);
+  }
+};
 
   return (
     <div className={styles.card}>
@@ -43,7 +72,7 @@ const PropertyCard = ({ property }: Props) => {
 
           <div
             className={styles.favoriteIcon}
-            onClick={() => setIsFavorite(!isFavorite)}>
+            onClick={handleFavoriteClick}>
             <i
               className={`${isFavorite ? 'fa-solid' : 'fa-regular'} fa-heart`}
             />

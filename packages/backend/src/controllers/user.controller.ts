@@ -29,7 +29,7 @@ const addFavourites = async (req: UserRequest, res: Response) => {
 }
 
 const removeFavourites = async (req: UserRequest, res: Response) => {
-    const { propertyId } = req.params;
+    const { propertyId } = req.body;
     const userId = req.user.id
 
     const {user, property } = await userService.removeFavourites(userId, propertyId);
@@ -42,7 +42,7 @@ const removeFavourites = async (req: UserRequest, res: Response) => {
 
     await user.save();
 
-    return res.status(200).json({ status: 200 });
+    return res.status(200).json({ success: true, message: 'Property removed from favourites.' });
 }
 
 const addRental = async (req: UserRequest, res: Response) => {

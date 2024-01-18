@@ -5,7 +5,7 @@ import { userController } from '../controllers/user.controller';
 const userRouter = Router();
 
 userRouter.post('/favourites', isAuthenticated, userController.addFavourites);
-userRouter.delete('/favourites/:propertyId', isAuthenticated, userController.removeFavourites);
+userRouter.delete('/favourites', isAuthenticated, userController.removeFavourites);
 userRouter.get('/favourites',isAuthenticated, userController.getFavourites);
 
 userRouter.post('/rental',isAuthenticated, isAdmin, userController.addRental);
