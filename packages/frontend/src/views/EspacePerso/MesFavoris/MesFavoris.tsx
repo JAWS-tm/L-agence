@@ -21,9 +21,15 @@ const MesFavoris: React.FC = () => {
         {propertiesLoading ? (
           <div className={styles.message}>Chargement...</div>
         ) : propertiesLoaded ? (
-          properties && properties.map((property: any) => (
-            <PropertyCard key={property.id} property={property} />
-          ))
+          properties!.length > 0 ? (
+            properties && properties.map((property: any) => (
+              <PropertyCard key={property.id} property={property} />
+            ))
+          ) : (
+            <div className={styles.message}>
+              Vous n'avez pas encore ajouté de propriétés à vos favoris
+            </div>
+          )
         ) : (
           <div className={styles.message}>
             Erreur lors du chargement des propriétés

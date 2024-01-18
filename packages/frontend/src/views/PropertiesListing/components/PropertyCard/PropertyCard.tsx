@@ -24,15 +24,10 @@ const PropertyCard = ({ property }: Props) => {
     const fetchUserFavorites = async () => {
       const response = await propertyService.getUserFavorites();
 
-      console.log('userFavorites:', response.data);
-      console.log('property.id:', property.id);
-
       if (Array.isArray(response.data)) {
         const isPropertyFavorite = response.data.some((favorite: { id: string }) => {
-          console.log('favorite.id:', favorite.id);
           return favorite.id === property.id;
         });
-        console.log('isPropertyFavorite:', isPropertyFavorite);
 
         setIsFavorite(isPropertyFavorite);
       }
