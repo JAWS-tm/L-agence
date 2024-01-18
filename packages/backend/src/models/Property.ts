@@ -4,6 +4,7 @@ import {
   Column,
   BaseEntity,
   OneToOne,
+
 } from 'typeorm';
 import { User } from './User';
 
@@ -44,8 +45,11 @@ export class Property extends BaseEntity {
   })
   imagesPaths: string[];
 
-  @OneToOne(() => User, (user) => user.rentedProperty)
-  tenant?: User;
+  @OneToOne(() => User, (user) => user.rentedProperty, {
+    nullable: true, // Permet à tenant d'être null
+    onDelete: 'SET NULL',
+  })
+  tenant: User | null;
 }
 
 export type PropertyType = Omit<Property, keyof BaseEntity>;
