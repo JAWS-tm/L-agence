@@ -1,8 +1,8 @@
+import { IsNull, Not } from 'typeorm';
+import { User } from '../models/User';
 import { userService } from '../services/user.service';
 import { UserRequest } from '../types/express';
 import { Response } from 'express';
-import { User } from '../models/User'
-import { Property } from '../models/Property'
 
 const getFavourites = async (req: UserRequest, res: Response) => {
     const favourites = await userService.getFavourites(req.user.id)
@@ -29,7 +29,7 @@ const addFavourites = async (req: UserRequest, res: Response) => {
 }
 
 const removeFavourites = async (req: UserRequest, res: Response) => {
-    const { propertyId } = req.params;
+    const { propertyId } = req.body;
     const userId = req.user.id
 
     const {user, property } = await userService.removeFavourites(userId, propertyId);
@@ -42,7 +42,67 @@ const removeFavourites = async (req: UserRequest, res: Response) => {
 
     await user.save();
 
-    return res.status(200).json({ status: 200 });
+    return res.status(200).json({ success: true, message: 'Property removed from favourites.' });
 }
 
-export const userController = {getFavourites, addFavourites, removeFavourites}
+const addRental = async (req: UserRequest, res: Response) => {
+    const { propertyId } = req.body;
+    const { userId } = req.body;
+
+    const { user, property } = await userService.addRental(userId, propertyId);
+
+    if (!user || !property) {
+        return res.status(404).json({ success: false, message: 'User or property not found.' });
+    }
+
+    property.tenant = user;
+    await property.save();
+
+    res.status(200).json({ success: true, message: 'Rental added successfully.' });
+}
+
+const removeRentalAdmin = async (req: UserRequest, res: Response) => {
+    const { propertyId } = req.body;
+    const { userId } = req.body;
+
+    const { user, property } = await userService.removeRental(userId, propertyId);
+
+    if (!user || !property) {
+        return res.status(404).json({ success: false, message: 'User or property not found.' });
+    }
+
+    property.tenant = null;
+    await property.save();
+
+    res.status(200).json({ success: true, message: 'Rental removed successfully.' });
+}
+
+const removeRental = async (req: UserRequest, res: Response) => {
+    const { propertyId } = req.body;
+    const userId = req.user.id;
+
+    const { user, property } = await userService.removeRental(userId, propertyId);
+
+    if (!user || !property) {
+        return res.status(404).json({ success: false, message: 'User or property not found.' });
+    }
+
+    property.tenant = null;
+    await property.save();
+
+    res.status(200).json({ success: true, message: 'Rental removed successfully.' });
+}
+
+const getAllRental = async (req: UserRequest, res: Response)=> {
+    const usersWithRental = await User.find({
+        where: {
+            rentedProperty: Not(IsNull())
+        }, 
+        relations: {
+            rentedProperty: true
+        }
+    })
+    return res.json(usersWithRental)
+};
+
+export const userController = {getFavourites, addFavourites, removeFavourites, addRental, removeRentalAdmin, removeRental, getAllRental}
