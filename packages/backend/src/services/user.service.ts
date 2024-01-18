@@ -70,4 +70,34 @@ const removeFavourites = async (userId: string, propertyId: string) => {
   return {user, property};
 };
 
-export const userService = { add, remove, findById, findByEmail, getFavourites, addFavourites, removeFavourites };
+const addRental = async (userId: string, propertyId: string) => {
+  const user = await User.findOne({
+    where: {
+        id: userId
+    }
+  });
+  const property = await Property.findOne({
+      where: {
+          id: propertyId
+      }
+  });
+
+  return {user, property}
+};
+
+const removeRental = async (userId: string, propertyId: string) => {
+  const user = await User.findOne({
+    where: {
+        id: userId
+    }
+  });
+  const property = await Property.findOne({
+      where: {
+          id: propertyId
+      }
+  });
+
+  return {user, property}
+};
+
+export const userService = { add, remove, findById, findByEmail, getFavourites, addFavourites, removeFavourites, addRental, removeRental };
