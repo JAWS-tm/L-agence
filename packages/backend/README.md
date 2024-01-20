@@ -23,7 +23,7 @@ DB_PASSWORD=
 DB_DATABASE=lagence
 
 MAILER_EMAIL=eseolagence@gmail.com
-MAILER_PASSWORD="idkl nueb jgrt gpaq "
+MAILER_PASSWORD="xxxx xxxx xxxx xxxx"
 ```
 
 ## Usage
