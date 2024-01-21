@@ -1,37 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import TitleCard from './components/TitleCard/TitleCard';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import PlaceholderImg from '../../assets/placeholder_image.jpg';
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import Button from '../../components/Button/Button';
+import Lotties from '../../components/Lotties/Lotties';
+import { propertyService } from '../../services';
+import { Property } from '../../services/property.type';
+import { CONFIG } from '../../utils/config';
+import styles from './Accommodation.module.scss';
+import ImageCard from './components/ImagesCard/ImagesCard';
+import InfoCardLayout from './components/InfoCardLayout/InfoCardLayout';
 import OverviewCard from './components/OverviewCard/OverviewCard';
 import PropertyDetailsCard from './components/PropertyDetailsCard/PropertyDetailsCard';
-import ImageCard from './components/ImagesCard/ImagesCard';
-import styles from './Accommodation.module.scss';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Property } from '../../services/property.type';
-import { propertyService } from '../../services';
-import Lotties from '../../components/Lotties/Lotties';
-import defaultImg from '../../assets/no_image_available.png';
-import InfoCardLayout from './components/InfoCardLayout/InfoCardLayout';
-import Button from '../../components/Button/Button';
-import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import TitleCard from './components/TitleCard/TitleCard';
 
-type Props = {};
-
-const images = [
-  'https://picsum.photos/id/1015/1000/600',
-  'https://picsum.photos/id/1016/1000/600',
-  'https://picsum.photos/id/1018/1000/600',
-  'https://picsum.photos/id/1019/1000/600',
-];
-
-const Accommodation: React.FC = () => {
+const Accommodation = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [property, setProperty] = useState<Property | null>(null);
-
-  const breadcrumbPaths = [
-    { name: 'Accueil', path: '/' },
-    { name: 'Locations', path: '/properties' },
-    { name: property?.name || 'Propriété', path: '' },
-  ];
 
   useEffect(() => {
     if (params.id) {
@@ -52,6 +38,19 @@ const Accommodation: React.FC = () => {
   }, []);
 
   if (!property) return <Lotties type="loading" width="60px" />;
+
+  const breadcrumbPaths = [
+    { name: 'Accueil', path: '/' },
+    { name: 'Locations', path: '/properties' },
+    { name: property?.name, path: '' },
+  ];
+
+  const images =
+    property.imagesPaths.length > 0
+      ? property.imagesPaths.map((image) => {
+          return CONFIG.PUBLIC_CONTENT_URL + '/' + image;
+        })
+      : [PlaceholderImg];
 
   return (
     <>
