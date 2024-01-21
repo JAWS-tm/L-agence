@@ -1,0 +1,65 @@
+.container {
+  $iconSize: 45px;
+
+  input {
+    display: none;
+  }
+
+  label {
+    border: 1px solid var(--borderColor);
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    transition: border-color 0.3s;
+    cursor: pointer;
+
+    .fileIcon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: $iconSize;
+      height: $iconSize;
+      background-color: var(--secondaryBackground);
+      border-radius: 5px;
+      padding: 10px;
+      margin-right: 20px;
+
+      i {
+        font-size: 25px;
+        opacity: 0.5;
+      }
+    }
+    .textContainer {
+      align-self: stretch;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .secondaryText {
+        font-size: 0.9rem;
+        color: var(--secondaryTextColor);
+      }
+    }
+
+    &.error {
+      border: 1px solid #ef3737 !important;
+    }
+  }
+
+  input:focus + label,
+  label:hover {
+    border-color: var(--primaryColor);
+  }
+
+  .errorMsg {
+    position: relative;
+    top: 2px;
+    margin: 0 2px;
+    font-size: 0.7rem;
+    color: #ef3737;
+    display: block;
+    height: 0px;
+  }
+}
