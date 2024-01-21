@@ -25,7 +25,7 @@ const images = [
 const breadcrumbPaths = [
   { name: 'Accueil', path: '/' },
   { name: 'Locations', path: '/properties' },
-  { name: 'Appartement', path: '/accommodation' },
+  { name: 'Appartement', path: '/property' },
 ];
 
 const Accommodation: React.FC = () => {
