@@ -20,7 +20,7 @@
 }
 
 .filtersButton {
-  visibility: hidden;
+  display: none;
 }
 
 .message {
@@ -35,7 +35,6 @@
   }
 
   .filtersButton {
-    // display: block;
-    visibility: visible;
+    display: inherit;
   }
 }

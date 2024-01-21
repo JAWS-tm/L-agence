@@ -29,6 +29,10 @@ a {
   }
 }
 
+body {
+  color: var(--textColor);
+}
+
 .content {
   padding: 30px;
   position: relative;
