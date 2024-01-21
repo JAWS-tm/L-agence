@@ -5,4 +5,7 @@ export type User = {
   email: string;
   role: 'user' | 'admin';
   createdAt: Date;
+
+  birthDate?: Date;
+  phone?: string;
 };

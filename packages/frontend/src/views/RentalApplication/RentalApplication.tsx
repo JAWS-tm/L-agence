@@ -1,81 +1,91 @@
-import styles from './RentApply.module.scss';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useQuery } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import Button from '../../components/Button/Button';
+import Checkbox from '../../components/Checkbox/Checkbox';
 import FileInput from '../../components/FileInput/FileInput';
 import Input from '../../components/Input/Input';
+import Lotties from '../../components/Lotties/Lotties';
 import TextArea from '../../components/TextArea/TextArea';
-import Button from '../../components/Button/Button';
-import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
-import { Property } from '../../services/property.type';
+import { propertyService } from '../../services';
 import useUserStore from '../../user/useUserStore';
-import Checkbox from '../../components/Checkbox/Checkbox';
-import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
-
-const ALLOWED_EXTENSIONS = ['pdf', 'png', 'jpg'];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-
-// Shared zod validation schema for file inputs
-const validateFile = (schema: z.ZodType<File>) =>
-  schema
-    .refine((file) => {
-      return file.size < MAX_FILE_SIZE;
-    }, 'Le fichier doit faire moins de 5MB.')
-    .refine((file) => {
-      return ALLOWED_EXTENSIONS.includes(file.name.split('.').pop() || '');
-    }, 'Le fichier doit être au format PDF, PNG ou JPG.');
-
-const applyValidation = z.object({
-  birthday: z.coerce.date().refine((date) => {
-    const today = new Date();
-    const age = today.getFullYear() - date.getFullYear();
-    return age >= 18;
-  }, 'Vous devez avoir au moins 18 ans pour candidater.'),
-  phone: z
-    .string()
-    .min(10, { message: 'Le numéro de téléphone est requis.' })
-    .refine((phone) => {
-      return phone.match(/^[0-9\s]*$/);
-    }, "Le numéro de téléphone n'est pas valide."),
-  about: z.string().min(1, { message: 'Veuillez vous présenter.' }),
-  id: validateFile(
-    z.instanceof(File, { message: "Pièce d'identité requise." })
-  ),
-  proof: validateFile(
-    z.instanceof(File, { message: 'Justificatif de domicile requis.' })
-  ),
-  saveForFuture: z.boolean().optional(),
-});
-
-type ApplyForm = z.infer<typeof applyValidation>;
+import styles from './RentalApplication.module.scss';
+import {
+  ALLOWED_EXTENSIONS,
+  ApplyForm,
+  applyValidation,
+} from './RentalApplication.validation';
 
 /**
  * Formulaire de candidature à un logement
  */
-const RentApply = () => {
+const RentalApplication = () => {
   const navigate = useNavigate();
+  const params = useParams();
   const user = useUserStore((state) => state.user!);
 
-  const breadcrumbPaths = [
-    { name: 'Accueil', path: '/' },
-    { name: 'T2 Doutre', path: '/property/:id' },
-    { name: 'Dépot de dossier', path: '/property/:id/apply' },
-  ];
+  // Retrieve property data
+  const { data: property } = useQuery({
+    enabled: !!params.id,
+    queryKey: ['properties', params.id],
+    queryFn: () => propertyService.getById(params.id! || ''),
+    onError: (err: AxiosError) => {
+      if (err.response?.status === 404) {
+        navigate('/properties');
+      }
+    },
+  });
 
+  // Form state management
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ApplyForm>({
     resolver: zodResolver(applyValidation),
     defaultValues: {
-      saveForFuture: false,
+      saveForLater: false,
     },
   });
 
+  useEffect(() => {
+    if (user.phone) setValue('phone', user.phone);
+    if (user.birthDate)
+      // @ts-ignore Zod coerce string to date when parsing but input type date expect string
+      setValue('birthday', user.birthDate.toISOString().split('T')[0]);
+  }, [user]);
+
+  if (!property) return <Lotties type="loading" width="60px" />;
+
+  const breadcrumbPaths = [
+    { name: 'Accueil', path: '/' },
+    { name: property?.name || '', path: '/property/:id' },
+    { name: 'Dépot de dossier', path: '/property/:id/apply' },
+  ];
+
   const onSubmit = handleSubmit(async (form: ApplyForm) => {
-    console.log(form);
+    console.log(form.birthday, typeof form.birthday);
+
+    return await propertyService
+      .apply(params.id!, {
+        idCard: form.id,
+        proofOfAddress: form.proof,
+        motivationText: form.about,
+        birthday: form.birthday as Date,
+        phone: form.phone,
+        // saveForFuture: form.saveForLater,
+      })
+      .then(() => {
+        navigate('/properties');
+        toast.success('Votre candidature a bien été envoyée !');
+      });
   });
 
   return (
@@ -85,7 +95,7 @@ const RentApply = () => {
       <h1 className={styles.title}>Dépot de dossier</h1>
       <p className={styles.description}>
         Veuillez remplir le formulaire ci-dessous pour déposer votre dossier de
-        candidature pour le logement : <span>T2 - Angers</span>
+        candidature pour le logement : <span>{property.name}</span>
       </p>
 
       <div className={styles.section}>
@@ -159,7 +169,7 @@ const RentApply = () => {
       </div>
 
       <Controller
-        name="saveForFuture"
+        name="saveForLater"
         control={control}
         render={({ field: { onChange, value, ...field } }) => (
           <Checkbox
@@ -191,4 +201,4 @@ const RentApply = () => {
   );
 };
 
-export default RentApply;
+export default RentalApplication;

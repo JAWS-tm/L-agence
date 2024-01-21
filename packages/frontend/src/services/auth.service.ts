@@ -37,7 +37,7 @@ const getMe = async (): Promise<User | null> => {
     .get('/auth/getMe')
     .then((res) => res.data.user)
     .catch(() => null);
-  if (user) return user;
+  if (user) return { ...user, birthDate: new Date(user.birthDate) };
   else return null;
 };
 

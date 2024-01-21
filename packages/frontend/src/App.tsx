@@ -9,7 +9,7 @@ import Contact from './components/Contact/Contact.tsx';
 import NotFound from './views/NotFound/NotFound.tsx';
 import PropertiesListing from './views/PropertiesListing/PropertiesListing.tsx';
 import Accommodation from './views/Accommodation/Accommodation.tsx';
-import RentApply from './views/RentApply/RentApply.tsx';
+import RentalApplication from './views/RentalApplication/RentalApplication.tsx';
 
 const App = () => {
   return (
@@ -26,7 +26,7 @@ const App = () => {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/my-account" element={<EspacePerso />} />
-            <Route path="/property/:id/apply" element={<RentApply />} />
+            <Route path="/property/:id/apply" element={<RentalApplication />} />
           </Route>
 
           <Route path="*" element={<Navigate to={'/404'} />} />

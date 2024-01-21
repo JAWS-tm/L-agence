@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import PlaceholderImg from '../../assets/placeholder_image.jpg';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Button/Button';
@@ -79,7 +79,9 @@ const Accommodation = () => {
                   Si vous êtes conquis par ce bien, vous pouvez déposer votre
                   dossier en cliquant sur le bouton suivant.
                 </p>
-                <Button type="primary" value="Déposer un dossier" />
+                <Link to={`/property/${property.id}/apply`}>
+                  <Button type="primary" value="Déposer un dossier" />
+                </Link>
               </div>
             </InfoCardLayout>
           </div>

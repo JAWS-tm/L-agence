@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { User } from './type';
 import { authService } from '../services';
+import { User } from './type';
 
 type UserStore = {
   user?: User;
