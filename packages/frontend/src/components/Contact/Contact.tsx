@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import styles from './Contact.module.css'
+import styles from './Contact.module.css';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import TextArea from '../TextArea/TextArea';
 
 interface FormData {
   email: string;
@@ -47,52 +48,49 @@ const Contact: React.FC = () => {
       });
       toast.success('Formulaire envoyé avec succès !');
     } catch (error) {
-      console.error('Erreur lors de l\'envoi du formulaire :', error);
+      console.error("Erreur lors de l'envoi du formulaire :", error);
       toast.error('Formulaire incorrect');
     }
   };
 
   return (
     <div className={styles.contact}>
-        <h1 className={styles.titleContact}>Contact</h1>
-        <form className={styles.contactForm} onSubmit={handleSubmit}>
-          <Input
-            type="email"
-            id="email"
-            name="email"
-            placeholder='Email'
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <Input
-            type="text"
-            id="subject"
-            name="subject"
-            placeholder='Objet'
-            value={formData.subject}
-            onChange={handleChange}
-            required
-          />
-        <div>
-            <textarea
-              className={styles.textareaForm}
-              id="message"
-              name="message"
-              placeholder='Message'
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-        </div>
+      <h1 className={styles.titleContact}>Contact</h1>
+      <form className={styles.contactForm} onSubmit={handleSubmit}>
+        <Input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="text"
+          id="subject"
+          name="subject"
+          placeholder="Objet"
+          value={formData.subject}
+          onChange={handleChange}
+          required
+        />
+        <TextArea
+          id="message"
+          name="message"
+          placeholder="Message"
+          value={formData.message}
+          onChange={handleChange}
+          required
+        />
         <Button
           className={styles.buttonForm}
           type="primary"
-          actionType='submit'
-          value='Envoyer'
+          actionType="submit"
+          value="Envoyer"
           loading={loading}
         />
-        </form>
+      </form>
     </div>
   );
 };
