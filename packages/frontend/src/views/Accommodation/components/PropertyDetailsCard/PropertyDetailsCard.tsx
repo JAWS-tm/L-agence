@@ -1,48 +1,38 @@
-import React from 'react';
 import styles from './PropertyDetailsCard.module.scss';
+import { Property } from '../../../../services/property.type';
 
-interface CardProps {
-  price: number;
-  size: number;
-  chargesPrice: number;
-  propertyType: string;
-  roomsCount: number;
-  description: string;
-}
+type Props = {
+  property: Property;
+};
 
-const PropertyDetailsCard: React.FC<CardProps> = ({
-  price,
-  size,
-  chargesPrice,
-  propertyType,
-  roomsCount,
-  description,
-}) => {
+const PropertyDetailsCard = (props: Props) => {
   return (
     <div className={styles.cardDetails}>
       <div className={styles.cardDetail}>
         <p className={styles.nameDetail}>Surface</p>
-        <p className={styles.contentDetail}>{size} m²</p>
+        <p className={styles.contentDetail}>{props.property.surface} m²</p>
       </div>
       <div className={styles.cardDetail}>
         <p className={styles.nameDetail}>Prix</p>
-        <p className={styles.contentDetail}>{price} €</p>
+        <p className={styles.contentDetail}>{props.property.price} €</p>
       </div>
       <div className={styles.cardDetail}>
         <p className={styles.nameDetail}>Charges</p>
-        <p className={styles.contentDetail}>{chargesPrice} €</p>
+        <p className={styles.contentDetail}>{props.property.chargesPrice} €</p>
       </div>
       <div className={styles.cardDetail}>
         <p className={styles.nameDetail}>Type</p>
-        <p className={styles.contentDetail}>{propertyType}</p>
+        <p className={styles.contentDetail}>
+          {props.property.type === 'apartment' ? 'Appartement' : 'Maison'}
+        </p>
       </div>
       <div className={styles.cardDetail}>
         <p className={styles.nameDetail}>Nombre de pieces</p>
-        <p className={styles.contentDetail}>{roomsCount}</p>
+        <p className={styles.contentDetail}>{props.property.roomsCount}</p>
       </div>
       <div className={styles.cardDetailDescription}>
         <p className={styles.nameDetail}>Description</p>
-        <p className={styles.contentDetail}>{description}</p>
+        <p className={styles.contentDetail}>{props.property.description}</p>
       </div>
     </div>
   );

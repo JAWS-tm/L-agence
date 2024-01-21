@@ -2,6 +2,10 @@
   width: 100%;
   display: flex;
   font-size: 0.9rem;
+  // gap: 10px;
+  a {
+    color: var(--primaryColor);
+  }
 
   .path,
   span {
