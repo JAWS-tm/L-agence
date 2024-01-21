@@ -7,7 +7,7 @@ import useUserStore from '../../user/useUserStore';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import { z } from 'zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 type Props = {};
@@ -24,36 +24,39 @@ type LoginForm = z.infer<typeof loginValidation>;
 
 const Login = (props: Props) => {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useUserStore();
+  const { login, isAuthenticated, requestedPath, setRequestedPath, loadUser } =
+    useUserStore();
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginValidation),
   });
-  const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (credentials: UserCredentials) => {
-    if (credentials) {
-      setLoading(true);
-      const user = await authService.login(credentials);
-      setLoading(false);
-      if (user) {
-        login(user);
-        navigate('/my-account');
-      } else {
-        toast.error('Identifiants incorrects.');
-      }
+  const onSubmit = handleSubmit(async (credentials: UserCredentials) => {
+    const user = await authService.login(credentials);
+
+    if (user) {
+      login(user);
     } else {
-      console.log('no credentials');
+      toast.error('Identifiants incorrects.');
     }
-  };
-
-  const onSubmit = handleSubmit((data) => {
-    return handleLogin(data);
   });
-  if (isAuthenticated) return <Navigate to={'/my-account'} />;
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (requestedPath) {
+        navigate(requestedPath);
+        setRequestedPath(null);
+      } else navigate('/my-account');
+    }
+  }, [isAuthenticated, isSubmitting]);
 
   return (
     <div className={styles.login}>
@@ -76,10 +79,9 @@ const Login = (props: Props) => {
           type="primary"
           actionType="submit"
           value="Se connecter"
-          loading={loading}
+          loading={isSubmitting}
         />
         <p className={styles.alreadyAccount}>
-          {' '}
           Pas de compte ?{' '}
           <span className={styles.link} onClick={() => navigate('/register')}>
             Créer mon compte
