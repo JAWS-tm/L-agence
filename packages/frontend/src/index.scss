@@ -20,14 +20,14 @@ $mobileSize: 680px;
   text-decoration: none;
 }
 
-a {
-  color: var(--primaryColor);
+// a {
+//   color: var(--primaryColor);
 
-  &:hover {
-    opacity: 0.8;
-    text-decoration: underline;
-  }
-}
+//   &:hover {
+//     opacity: 0.8;
+//     text-decoration: underline;
+//   }
+// }
 
 body {
   color: var(--textColor);
@@ -36,6 +36,8 @@ body {
 .content {
   padding: 30px;
   position: relative;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 768px) {

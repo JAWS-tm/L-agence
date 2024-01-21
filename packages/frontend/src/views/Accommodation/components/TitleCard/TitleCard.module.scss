@@ -1,0 +1,43 @@
+.titleCard {
+  .name {
+    font-size: 1.8rem;
+    color: var(--textColor);
+  }
+  .saleType {
+    display: table;
+    color: #f9f9f9;
+    background-color: #6e55ff;
+    padding: 2px 8px 2px 8px;
+    font-size: 13px;
+    border-radius: 3px;
+    text-align: center;
+    margin: 5px 0;
+  }
+
+  .price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primaryColor);
+    margin: 10px 0;
+  }
+  .monthly {
+    font-size: 0.8rem;
+    color: var(--secondaryTextColor);
+    margin: 0 3px;
+  }
+
+  .propertyInfo {
+    .row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 5px 0;
+      i {
+        margin-top: 2px;
+        color: var(--secondaryTextColor);
+      }
+      p {
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { Property, PropertyType } from '../../../../services/property.type';
 import { propertyService } from '../../../../services/property.service';
 import { CONFIG } from '../../../../utils/config';
 import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 type Props = {
   property: Property;
@@ -25,9 +26,11 @@ const PropertyCard = ({ property }: Props) => {
       const response = await propertyService.getUserFavorites();
 
       if (Array.isArray(response.data)) {
-        const isPropertyFavorite = response.data.some((favorite: { id: string }) => {
-          return favorite.id === property.id;
-        });
+        const isPropertyFavorite = response.data.some(
+          (favorite: { id: string }) => {
+            return favorite.id === property.id;
+          }
+        );
 
         setIsFavorite(isPropertyFavorite);
       }
@@ -42,17 +45,18 @@ const PropertyCard = ({ property }: Props) => {
     setImage(CONFIG.PUBLIC_CONTENT_URL + '/' + property.imagesPaths[0]);
   }, [property.imagesPaths]);
 
-
-
-const handleFavoriteClick = async () => {
-  const response = await propertyService.toggleFavorite(property.id, isFavorite);
-  if (response.success) {
-    setIsFavorite(!isFavorite);
-  }
-};
+  const handleFavoriteClick = async () => {
+    const response = await propertyService.toggleFavorite(
+      property.id,
+      isFavorite
+    );
+    if (response.success) {
+      setIsFavorite(!isFavorite);
+    }
+  };
 
   return (
-    <div className={styles.card}>
+    <Link to={`/accommodation/${property.id}`} className={styles.card}>
       <div className={styles.imageLayout}>
         <div className={styles.image}>
           <img
@@ -65,9 +69,7 @@ const handleFavoriteClick = async () => {
         <div className={styles.imageBottomSection}>
           <span className={styles.price}>{property.price}€</span>
 
-          <div
-            className={styles.favoriteIcon}
-            onClick={handleFavoriteClick}>
+          <div className={styles.favoriteIcon} onClick={handleFavoriteClick}>
             <i
               className={`${isFavorite ? 'fa-solid' : 'fa-regular'} fa-heart`}
             />
@@ -100,7 +102,7 @@ const handleFavoriteClick = async () => {
           <span>{property.surface}m²</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -6,13 +6,26 @@ type GetAllResponse = {
   properties: Property[];
 };
 
+type GetByIdResponse = {
+  propertie: Property;
+};
+
 const getAll = async () => {
   const { data } = await axiosClient.get<GetAllResponse>('properties');
 
   return data.properties;
 };
 
-const toggleFavorite = async (propertyId: string, isFavorite: boolean): Promise<Favorite> => {
+const getById = async (id: string) => {
+  const { data } = await axiosClient.get<GetByIdResponse>('/properties/' + id);
+
+  return data.propertie;
+};
+
+const toggleFavorite = async (
+  propertyId: string,
+  isFavorite: boolean
+): Promise<Favorite> => {
   const method = isFavorite ? 'delete' : 'post';
   try {
     const response = await axiosClient({
@@ -27,8 +40,13 @@ const toggleFavorite = async (propertyId: string, isFavorite: boolean): Promise<
   }
 };
 
-const getUserFavorites = async ()=> {
+const getUserFavorites = async () => {
   return axiosClient.get('/user/favourites');
-}
+};
 
-export const propertyService = { getAll, toggleFavorite, getUserFavorites };
+export const propertyService = {
+  getAll,
+  getById,
+  toggleFavorite,
+  getUserFavorites,
+};

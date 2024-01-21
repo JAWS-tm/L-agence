@@ -18,7 +18,25 @@
   gap: 25px;
 }
 
-.labelForm {
-  margin-bottom: 5px;
-  font-weight: bold;
+.textareaForm {
+  width: 100%;
+  border: 1px solid var(--borderColor);
+  padding: 16px 18px;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.3s;
+  resize: none;
+  height: 200px;
+}
+.textareaForm::placeholder {
+  color: var(--secondaryTextColor);
+}
+
+.textareaForm:focus {
+  border: 1px solid var(--primaryColor);
+}
+
+.textareaForm.error {
+  border: 1px solid #ef3737;
 }
