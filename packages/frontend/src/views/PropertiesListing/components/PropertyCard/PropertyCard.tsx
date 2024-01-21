@@ -4,7 +4,7 @@ import { Property, PropertyType } from '../../../../services/property.type';
 import { propertyService } from '../../../../services/property.service';
 import { CONFIG } from '../../../../utils/config';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type Props = {
   property: Property;
