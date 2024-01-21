@@ -9,6 +9,7 @@ import Contact from './components/Contact/Contact.tsx';
 import { Toaster } from 'react-hot-toast';
 import NotFound from './views/NotFound/NotFound.tsx';
 import PropertiesListing from './views/PropertiesListing/PropertiesListing.tsx';
+import Accommodation from './views/Accommodation/Accommodation.tsx';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/properties" element={<PropertiesListing />} />
+          <Route path="/accommodation" element={<Accommodation />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />} />
