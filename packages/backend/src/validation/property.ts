@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { NextFunction, Request, Response, Express } from 'express';
 
 export const addPropertySchema = z.object({
   name: z.string().min(1),
@@ -13,4 +14,10 @@ export const addPropertySchema = z.object({
 
 export const updatePropertySchema = addPropertySchema.extend({
   id: z.string().min(1),
+});
+
+export const applySchema = z.object({
+  motivationText: z.string().min(1),
+  phone: z.string().min(10),
+  birthday: z.coerce.date(),
 });

@@ -1,13 +1,13 @@
 import { AnyZodObject, z } from 'zod';
 import { Request, Response } from 'express';
 
-export const validateBody = <T extends AnyZodObject>(
+export const validateRequest = <T extends AnyZodObject>(
   schema: T,
-  req: Request,
+  data: any,
   res: Response
 ): z.infer<T> | false => {
   try {
-    return schema.parse(req.body);
+    return schema.parse(data);
   } catch (error) {
     res.status(400).json({
       message: 'Champs invalides',
@@ -19,3 +19,5 @@ export const validateBody = <T extends AnyZodObject>(
     return false;
   }
 };
+
+export * from './property';

@@ -23,4 +23,20 @@ propertyRouter.delete(
   propertyController.remove
 );
 
+propertyRouter.post(
+  '/:id/apply',
+  isAuthenticated,
+  uploadMiddleware.fields([
+    {
+      name: 'idCard',
+      maxCount: 1,
+    },
+    {
+      name: 'proofOfAddress',
+      maxCount: 1,
+    },
+  ]),
+  propertyController.rentalApplication
+);
+
 export default propertyRouter;

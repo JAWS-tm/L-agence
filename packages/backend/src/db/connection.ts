@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { User } from '../models/User';
 import { Property } from '../models/Property';
+import { RentalApplication } from '../models/RentalApplication';
 
 const AppDataSource = new DataSource({
   type: 'mariadb',
@@ -14,7 +15,7 @@ const AppDataSource = new DataSource({
   database: process.env.DB_DATABASE ?? 'lagence',
   synchronize: process.env.NODE_ENV === 'production' ? false : true,
   logging: false,
-  entities: [User, Property],
+  entities: [User, Property, RentalApplication],
   migrationsTableName: 'migrations',
   migrations: ['migrations/*.ts'],
   subscribers: [],
