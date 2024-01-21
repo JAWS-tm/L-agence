@@ -22,24 +22,22 @@ const images = [
   'https://picsum.photos/id/1019/1000/600',
 ];
 
-const breadcrumbPaths = [
-  { name: 'Accueil', path: '/' },
-  { name: 'Locations', path: '/properties' },
-  { name: 'Appartement', path: '/accommodation' },
-];
-
 const Accommodation: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [property, setProperty] = useState<Property | null>(null);
 
+  const breadcrumbPaths = [
+    { name: 'Accueil', path: '/' },
+    { name: 'Locations', path: '/properties' },
+    { name: property?.name || 'Propriété', path: '' },
+  ];
+
   useEffect(() => {
-    console.log('extracted id from params : ', params);
     if (params.id) {
       propertyService
         .getById(params.id)
         .then((property) => {
-          console.log('property : ', property);
           setProperty(property);
         })
         .catch((err) => {
@@ -48,6 +46,8 @@ const Accommodation: React.FC = () => {
           }
         })
         .finally(() => {});
+    } else {
+      navigate('/properties');
     }
   }, []);
 
@@ -65,7 +65,7 @@ const Accommodation: React.FC = () => {
 
         <div className={styles.secondView}>
           <div style={{ flex: 3 }}>
-            <InfoCardLayout title="Apperçu">
+            <InfoCardLayout title="Aperçu">
               <OverviewCard property={property} />
             </InfoCardLayout>
 
@@ -78,7 +78,7 @@ const Accommodation: React.FC = () => {
               <div className={styles.interested}>
                 <p className={styles.message}>
                   Si vous êtes conquis par ce bien, vous pouvez déposer votre
-                  dossier en cliquant sur le bouton suivant.{' '}
+                  dossier en cliquant sur le bouton suivant.
                 </p>
                 <Button type="primary" value="Déposer un dossier" />
               </div>

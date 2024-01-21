@@ -56,7 +56,7 @@ const PropertyCard = ({ property }: Props) => {
   };
 
   return (
-    <Link to={`/accommodation/${property.id}`} className={styles.card}>
+    <Link to={`/property/${property.id}`} className={styles.card}>
       <div className={styles.imageLayout}>
         <div className={styles.image}>
           <img

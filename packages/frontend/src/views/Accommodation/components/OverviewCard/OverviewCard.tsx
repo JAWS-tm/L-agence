@@ -11,7 +11,7 @@ const OverviewCard = (props: Props) => {
       <div className={styles.cardDetail}>
         <i className="fa-solid fa-door-open"></i>
         <div>
-          <p>Piece</p>
+          <p>Pièces</p>
           <span>{props.property.roomsCount}</span>
         </div>
       </div>

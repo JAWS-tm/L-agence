@@ -27,7 +27,7 @@ const PropertyDetailsCard = (props: Props) => {
         </p>
       </div>
       <div className={styles.cardDetail}>
-        <p className={styles.nameDetail}>Nombre de pieces</p>
+        <p className={styles.nameDetail}>Nombre de pièces</p>
         <p className={styles.contentDetail}>{props.property.roomsCount}</p>
       </div>
       <div className={styles.cardDetailDescription}>
