@@ -6,6 +6,7 @@ import { uploadMiddleware } from '../utils/file';
 const propertyRouter = Router();
 
 propertyRouter.get('/', propertyController.getAll);
+propertyRouter.get('/:id', propertyController.getById);
 
 propertyRouter.post(
   '/',

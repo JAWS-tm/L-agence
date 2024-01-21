@@ -20,6 +20,8 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 const ACCEPTED_IMAGE_TYPES = ['jpeg', 'jpg', 'png', 'webp'];
 
 const create = async (req: UserRequest, res: Response) => {
+  console.log(req);
+
   if (!req.files) {
     return res.status(400).json({
       status: 400,
@@ -80,14 +82,6 @@ const update = async (req: UserRequest, res: Response, next: NextFunction) => {
   res.status(200).json({ status: 201 });
 };
 
-const getAll = async (req: Request, res: Response) => {
-  const properties = await propertyService.findAll();
-
-  return res
-    .status(200)
-    .json({ status: 200, properties: instanceToPlain(properties) });
-};
-
 const remove = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -96,4 +90,24 @@ const remove = async (req: Request, res: Response) => {
   return res.status(200).json({ status: 200 });
 };
 
-export const propertyController = { getAll, create, update, remove };
+const getAll = async (req: Request, res: Response) => {
+  const properties = await propertyService.findAll();
+
+  return res
+    .status(200)
+    .json({ status: 200, properties: instanceToPlain(properties) });
+};
+
+const getById = async (req: Request, res: Response) => {
+  const propertie = await propertyService.findById(req.params.id);
+
+  if (propertie) {
+    return res
+      .status(200)
+      .json({ status: 200, propertie: instanceToPlain(propertie) });
+  } else {
+    return res.status(404).json({ status: 404 });
+  }
+};
+
+export const propertyController = { getAll, getById, create, update, remove };
