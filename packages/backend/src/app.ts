@@ -2,6 +2,8 @@ import express from 'express';
 // import logger from "morgan";
 import cors from 'cors';
 import session from 'express-session';
+import FileStore from 'session-file-store';
+
 import appRouter from './routes';
 import { User } from './models/User';
 import { errorHandler } from './utils/error';
@@ -27,10 +29,14 @@ app.use(
   session({
     secret: 'lagence',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
       secure: process.env.NODE_ENV === 'production',
     },
+    // Store session on file system to persist between server restarts
+    store: new (FileStore(session))({
+      // path: './sessions',
+    }),
   })
 );
 app.use(express.static('public'));
