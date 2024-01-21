@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 const InformationsPerso: React.FC = () => {
   const user = useUserStore((state) => state.user);
 
-  const dataStr = user?.createdAt.toString();
+  const dataStr = user?.createdAt.toString().substring(0, 10);
 
   const informations: { label: string; value: keyof User }[] = [
     { label: 'Prénom', value: 'firstName' },
