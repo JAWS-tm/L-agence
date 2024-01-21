@@ -71,8 +71,6 @@ const RentalApplication = () => {
   ];
 
   const onSubmit = handleSubmit(async (form: ApplyForm) => {
-    console.log(form.birthday, typeof form.birthday);
-
     return await propertyService
       .apply(params.id!, {
         idCard: form.id,

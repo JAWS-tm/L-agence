@@ -15,8 +15,6 @@ import { mailerService } from '../services/mail.service';
 import { userService } from '../services/user.service';
 
 const create = async (req: UserRequest, res: Response) => {
-  console.log(req);
-
   if (!req.files) {
     return res.status(400).json({
       status: 400,

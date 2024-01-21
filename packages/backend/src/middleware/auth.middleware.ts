@@ -8,7 +8,6 @@ export async function isAuthenticated(
   next: NextFunction
 ) {
   const userId = req.session.userId;
-  console.log(req.session);
 
   if (!userId) return res.sendStatus(401);
   const user = await userService.findById(userId);

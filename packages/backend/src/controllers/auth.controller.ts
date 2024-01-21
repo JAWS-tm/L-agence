@@ -30,7 +30,6 @@ const register = async (req: Request, res: Response) => {
       return bcrypt.hash(data.password, salt);
     })
     .then((hash) => {
-      console.log('Hash: ', hash);
       data.password = hash;
     })
     .catch((err) => {
@@ -41,7 +40,6 @@ const register = async (req: Request, res: Response) => {
   const user = await userService.add(data);
 
   if (user) {
-    console.log('registered with success');
     req.session.userId = user.id;
 
     mailerService.sendMail({
@@ -78,22 +76,18 @@ const login = async (req: Request, res: Response) => {
     if (success) {
       req.session.userId = user.id;
 
-      console.log('user is authenticated');
-
       return res.status(200).json({
         status: 200,
         message: 'Successfully authenticated.',
         user: instanceToPlain(user),
       });
     } else {
-      console.log('password doesn`t match');
       // We don't inform the user that the password is wrong which would mean the email is correct
       return res
         .status(401)
         .json({ status: 401, message: 'Wrong credentials' });
     }
   } else {
-    console.log('Email not found');
     return res.status(401).json({ status: 401, message: 'Wrong credentials' });
   }
 };
@@ -104,8 +98,6 @@ const logout = (req: UserRequest, res: Response) => {
 };
 
 const getMe = (req: UserRequest, res: Response) => {
-  console.log('user', req.user);
-
   return res.json({ status: 200, user: req.user });
 };
 

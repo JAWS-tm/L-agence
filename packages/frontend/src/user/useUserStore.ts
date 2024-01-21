@@ -20,7 +20,6 @@ const useUserStore = create<UserStore>((set) => ({
 
   login: (user: User) => set({ user, isAuthenticated: true }),
   logout: () => {
-    console.log('logout called');
     authService.logout();
     set({ user: undefined, isAuthenticated: false });
   },
