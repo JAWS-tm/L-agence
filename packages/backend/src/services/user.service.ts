@@ -10,6 +10,12 @@ const remove = async (userId: string) => {
   return await User.delete(userId);
 };
 
+const findAll = async () => {
+  const user =await User.find();
+  if (user) return user;
+  else return null;
+};
+
 const findById = async (userId: string) => {
   const user = await User.findOneBy({ id: userId });
   if (user) return user;
@@ -70,4 +76,4 @@ const removeFavourites = async (userId: string, propertyId: string) => {
   return {user, property};
 };
 
-export const userService = { add, remove, findById, findByEmail, getFavourites, addFavourites, removeFavourites };
+export const userService = { add, remove, findById, findAll, findByEmail, getFavourites, addFavourites, removeFavourites };

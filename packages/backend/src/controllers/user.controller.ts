@@ -4,11 +4,28 @@ import { Response } from 'express';
 import { User } from '../models/User'
 import { Property } from '../models/Property'
 
+const getUsers = async (req: UserRequest, res: Response) => {
+    return res.json(
+        await userService.findAll()
+    )
+}
+
+const removeUser = async (req: UserRequest, res: Response) => {
+    const { userId } = req.params;
+
+   await userService.remove(userId);
+
+  return res.status(200).json({ status: 200 });
+}
+
+
+
 const getFavourites = async (req: UserRequest, res: Response) => {
     const favourites = await userService.getFavourites(req.user.id)
 
     res.json(favourites)
 }
+
 
 const addFavourites = async (req: UserRequest, res: Response) => {
     const { propertyId } = req.body;
@@ -45,4 +62,4 @@ const removeFavourites = async (req: UserRequest, res: Response) => {
     return res.status(200).json({ status: 200 });
 }
 
-export const userController = {getFavourites, addFavourites, removeFavourites}
+export const userController = {getFavourites, addFavourites, removeFavourites, getUsers, removeUser}
