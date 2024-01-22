@@ -7,7 +7,7 @@ type Props = {};
 
 const ProtectedRoute = (props: Props) => {
   const [loadingUser, setLoadingUser] = useState(true);
-  const login = useUserStore((state) => state.login);
+  const login = useUserStore((state) => state.setUser);
 
   useEffect(() => {
     (async () => {

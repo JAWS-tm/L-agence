@@ -24,7 +24,7 @@ type LoginForm = z.infer<typeof loginValidation>;
 
 const Login = (props: Props) => {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useUserStore();
+  const { setUser: login, isAuthenticated } = useUserStore();
   const {
     register,
     handleSubmit,

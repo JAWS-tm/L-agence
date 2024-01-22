@@ -38,9 +38,11 @@ export class User extends BaseEntity {
 
   @OneToOne(() => Property, (property) => property.tenant, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
+  
   @JoinColumn()
-  rentedProperty: Property;
+  rentedProperty: Property | null;
 
   @ManyToMany(() => Property)
   @JoinTable()

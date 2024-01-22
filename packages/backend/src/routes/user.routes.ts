@@ -12,5 +12,6 @@ userRouter.post('/rental',isAuthenticated, isAdmin, userController.addRental);
 userRouter.delete('/rental/:propertyId', isAuthenticated, isAdmin, userController.removeRentalAdmin);
 userRouter.delete('/rental', isAuthenticated, userController.removeRental);
 userRouter.get('/rental', isAuthenticated, isAdmin, userController.getAllRental);
+userRouter.get('/rental/me', isAuthenticated, userController.getRental);
 
 export default userRouter;

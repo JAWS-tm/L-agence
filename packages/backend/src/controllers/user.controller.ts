@@ -50,7 +50,7 @@ const addRental = async (req: UserRequest, res: Response) => {
     const { userId } = req.body;
 
     const { user, property } = await userService.addRental(userId, propertyId);
-
+    
     if (!user || !property) {
         return res.status(404).json({ success: false, message: 'User or property not found.' });
     }
@@ -65,7 +65,7 @@ const removeRentalAdmin = async (req: UserRequest, res: Response) => {
     const { propertyId } = req.body;
     const { userId } = req.body;
 
-    const { user, property } = await userService.removeRental(userId, propertyId);
+    const { user, property } = await userService.removeRentalAdmin(userId, propertyId);
 
     if (!user || !property) {
         return res.status(404).json({ success: false, message: 'User or property not found.' });
@@ -78,17 +78,16 @@ const removeRentalAdmin = async (req: UserRequest, res: Response) => {
 }
 
 const removeRental = async (req: UserRequest, res: Response) => {
-    const { propertyId } = req.body;
     const userId = req.user.id;
 
-    const { user, property } = await userService.removeRental(userId, propertyId);
+    const { user } = await userService.removeRental(userId);
 
-    if (!user || !property) {
-        return res.status(404).json({ success: false, message: 'User or property not found.' });
+    if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found.' });
     }
 
-    property.tenant = null;
-    await property.save();
+    user.rentedProperty = null;
+    await user.save();
 
     res.status(200).json({ success: true, message: 'Rental removed successfully.' });
 }
@@ -105,4 +104,16 @@ const getAllRental = async (req: UserRequest, res: Response)=> {
     return res.json(usersWithRental)
 };
 
-export const userController = {getFavourites, addFavourites, removeFavourites, addRental, removeRentalAdmin, removeRental, getAllRental}
+const getRental = async (req: UserRequest, res: Response)=> {
+    const userWithRental = await User.findOne({
+        where: {
+            rentedProperty: Not(IsNull())
+        }, 
+        relations: {
+            rentedProperty: true
+        }
+    })
+    return res.json(userWithRental)
+};
+
+export const userController = {getFavourites, addFavourites, removeFavourites, addRental, removeRentalAdmin, removeRental, getAllRental, getRental}
