@@ -15,10 +15,10 @@ export class RentalApplication extends BaseEntity {
 
   // @Column()
   // foreign key to user
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
-  @ManyToOne(() => Property)
+  @ManyToOne(() => Property, { onDelete: 'CASCADE' })
   property: Property;
 
   @Column('text')
