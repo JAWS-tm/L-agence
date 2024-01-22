@@ -12,11 +12,13 @@ export type UserRegisteration = {
 
 const login = async (credentials: UserCredentials) => {
   let user: User | null = null;
-  await axiosClient.post('/auth/login', credentials).then((res) => {
-    user = res.data.user;
-  });
-  // .catch((err) => {
-  // });
+  await axiosClient
+    .post('/auth/login', credentials)
+    .then((res) => {
+      user = res.data.user;
+    })
+    .catch((err) => {});
+
   return user;
 };
 
