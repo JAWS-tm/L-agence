@@ -3,6 +3,8 @@ import { User } from '../models/User';
 import { userService } from '../services/user.service';
 import { UserRequest } from '../types/express';
 import { Response } from 'express';
+import { RentalApplication } from '../models/RentalApplication';
+import { Property } from '../models/Property';
 
 const getUsers = async (req: UserRequest, res: Response) => {
     return res.json(
@@ -63,24 +65,28 @@ const removeFavourites = async (req: UserRequest, res: Response) => {
 }
 
 const addRental = async (req: UserRequest, res: Response) => {
-    const { propertyId } = req.body;
-    const { userId } = req.body;
+    const { rentalAppId } = req.body;
+    const userId = req.user.id;
 
-    const { user, property } = await userService.addRental(userId, propertyId);
+    const { rentalApplication, user } = await userService.addRental(rentalAppId, userId);
     
-    if (!user || !property) {
-        return res.status(404).json({ success: false, message: 'User or property not found.' });
+    if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found.' });
     }
 
-    property.tenant = user;
-    await property.save();
-
-    res.status(200).json({ success: true, message: 'Rental added successfully.' });
+    if(rentalApplication?.state == "accepted" && rentalApplication.property){
+        const property = rentalApplication.property;
+        property.tenant = user;
+        await property.save();
+        res.status(200).json({ success: true, message: 'Rental added successfully.' });
+    }
+    else
+        res.status(400).json({ success: false, message: 'Rental not added.' });
 }
 
 const removeRentalAdmin = async (req: UserRequest, res: Response) => {
-    const { propertyId } = req.body;
-    const { userId } = req.body;
+    const propertyId = req.params.userId;
+    const userId = req.params.propertyId;
 
     const { user, property } = await userService.removeRentalAdmin(userId, propertyId);
 
@@ -133,4 +139,33 @@ const getRental = async (req: UserRequest, res: Response)=> {
     return res.json(userWithRental)
 };
 
-export const userController = {getUsers, getFavourites, addFavourites, removeFavourites, addRental, removeRentalAdmin, removeRental, getAllRental, getRental}
+const getRentalApplication = async (req: UserRequest, res: Response)=> {
+    const userId = req.user.id;
+
+    const rentalApp = await userService.getRentalApplication(userId);
+
+    res.status(200).json(rentalApp);
+}
+
+const getRentalApplicationById = async (req: UserRequest, res: Response)=> {
+    const id = req.params.id;
+
+    const rentalApp = await userService.getRentalApplicationById(id);
+
+    res.status(200).json(rentalApp);
+}
+
+export const userController = {
+    getUsers,
+    removeUser,
+    getFavourites,
+    addFavourites,
+    removeFavourites,
+    addRental,
+    removeRentalAdmin,
+    removeRental,
+    getAllRental,
+    getRental,
+    getRentalApplication,
+    getRentalApplicationById
+}

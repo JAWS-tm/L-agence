@@ -12,7 +12,7 @@
     max-width: 800px;
     margin: 30px auto;
     border-radius: 10px;
-    background-color: var(--secondaryColor);
+    background-color: var(--secondaryBackground);
     padding: 10px 20px;
 
     .label {
