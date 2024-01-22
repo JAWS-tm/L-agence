@@ -19,7 +19,7 @@ const typeTranslation: {
 
 const PropertyCard = ({ property }: Props) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserFavorites = async () => {
@@ -35,7 +35,6 @@ const PropertyCard = ({ property }: Props) => {
         setIsFavorite(isPropertyFavorite);
       }
     };
-
     fetchUserFavorites();
 
     if (!property.imagesPaths.length) {
@@ -60,9 +59,12 @@ const PropertyCard = ({ property }: Props) => {
       <div className={styles.imageLayout}>
         <div className={styles.image}>
           <img
-            src={image}
+            src={image ?? PlaceholderImg}
             alt="Home preview"
-            onError={() => setImage(PlaceholderImg)}
+            onError={() => {
+              console.log('failed to load image', image);
+              setImage(PlaceholderImg);
+            }}
           />
         </div>
 
