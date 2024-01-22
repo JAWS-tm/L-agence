@@ -10,6 +10,7 @@ import NotFound from './views/NotFound/NotFound.tsx';
 import PropertiesListing from './views/PropertiesListing/PropertiesListing.tsx';
 import Accommodation from './views/Accommodation/Accommodation.tsx';
 import RentalApplication from './views/RentalApplication/RentalApplication.tsx';
+import OnGoingApplication from './views/EspacePerso/OnGoingApplication/OnGoingApplication.tsx'
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/my-account" element={<EspacePerso />} />
             <Route path="/property/:id/apply" element={<RentalApplication />} />
+            <Route path="/ongoingapplication/:id" element={<OnGoingApplication />} />
           </Route>
 
           <Route path="*" element={<Navigate to={'/404'} />} />

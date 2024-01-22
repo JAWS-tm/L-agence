@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './EspaceLocataire.module.css';
 import useUserStore from '../../../user/useUserStore';
 import { Property } from '../../../services/property.type';
@@ -10,9 +10,14 @@ import { axiosClient } from '../../../services';
 const EspaceLocataire: React.FC = () => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
+  const loadUser = useUserStore((state) => state.loadUser);
   const property = user?.rentedProperty
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    loadUser()
+  }, [])
 
   const informations: { label: string; value: keyof Property }[] = [
     { label: 'Nom', value: 'name' },

@@ -43,6 +43,14 @@ const getUserFavorites = async () => {
   return axiosClient.get('/user/favourites');
 };
 
+const getUserApplications = async () => {
+  return axiosClient.get('/user/rental/application');
+}
+
+const getUserApplicationById = async (id: string) => {
+  return axiosClient.get('/user/rental/application/' + id);
+}
+
 type ApplyData = {
   motivationText: string;
   idCard: File;
@@ -70,4 +78,6 @@ export const propertyService = {
   toggleFavorite,
   getUserFavorites,
   apply,
+  getUserApplications,
+  getUserApplicationById
 };
