@@ -23,7 +23,7 @@ const MesFavoris: React.FC = () => {
         ) : propertiesLoaded ? (
           properties!.length > 0 ? (
             properties && properties.map((property: any) => (
-              <PropertyCard key={property.id} property={property} />
+              <PropertyCard key={property.id} property={property} redirectTo={`/property/${property.id}`} />
             ))
           ) : (
             <div className={styles.message}>
