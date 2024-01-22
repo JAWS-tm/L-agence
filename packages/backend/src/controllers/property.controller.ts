@@ -2,26 +2,19 @@ import { propertyService } from '../services/property.service';
 import { UserRequest } from '../types/express';
 import { NextFunction, Request, Response } from 'express';
 import { instanceToPlain } from 'class-transformer';
-import { validateBody } from '../validation';
+import { validateRequest } from '../validation';
 import {
   addPropertySchema,
+  applySchema,
   updatePropertySchema,
 } from '../validation/property';
-import { deleteFiles } from '../utils/file';
+import { checkFile, deleteFiles } from '../utils/file';
 import { Property } from '../models/Property';
-
-const MAX_FILE_SIZE = 1024 * 1024 * 5;
-const ACCEPTED_IMAGE_MIME_TYPES = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp',
-];
-const ACCEPTED_IMAGE_TYPES = ['jpeg', 'jpg', 'png', 'webp'];
+import { rentalApplicationService } from '../services/rentalApplication.service';
+import { mailerService } from '../services/mail.service';
+import { userService } from '../services/user.service';
 
 const create = async (req: UserRequest, res: Response) => {
-  console.log(req);
-
   if (!req.files) {
     return res.status(400).json({
       status: 400,
@@ -33,30 +26,11 @@ const create = async (req: UserRequest, res: Response) => {
   const images = req.files as Express.Multer.File[];
 
   for (const image of images) {
-    if (!ACCEPTED_IMAGE_MIME_TYPES.includes(image.mimetype)) {
-      deleteFiles(images);
-      return res.status(400).json({
-        status: 400,
-        message: `File ${
-          image.originalname
-        } is not an image. Accepted formats are: ${ACCEPTED_IMAGE_TYPES.join(
-          ', '
-        )}`,
-      });
-    }
-
-    if (image.size > MAX_FILE_SIZE) {
-      deleteFiles(images);
-      return res.status(400).json({
-        status: 400,
-        message: `File ${image.originalname} is too big. Max size is ${
-          MAX_FILE_SIZE / 1024 / 1024
-        }MB`,
-      });
-    }
+    const error = checkFile(image, 'image', res);
+    if (error) return;
   }
 
-  const data = validateBody(addPropertySchema, req, res);
+  const data = validateRequest(addPropertySchema, req.body, res);
   if (!data) return;
 
   const newProperty = Property.create(data);
@@ -70,7 +44,7 @@ const create = async (req: UserRequest, res: Response) => {
 };
 
 const update = async (req: UserRequest, res: Response, next: NextFunction) => {
-  const data = validateBody(updatePropertySchema, req, res);
+  const data = validateRequest(updatePropertySchema, req.body, res);
   if (!data) return;
 
   try {
@@ -99,15 +73,76 @@ const getAll = async (req: Request, res: Response) => {
 };
 
 const getById = async (req: Request, res: Response) => {
-  const propertie = await propertyService.findById(req.params.id);
+  const property = await propertyService.findById(req.params.id);
 
-  if (propertie) {
+  if (property) {
     return res
       .status(200)
-      .json({ status: 200, propertie: instanceToPlain(propertie) });
+      .json({ status: 200, property: instanceToPlain(property) });
   } else {
     return res.status(404).json({ status: 404 });
   }
 };
 
-export const propertyController = { getAll, getById, create, update, remove };
+/**
+ * Apply to a property rental
+ * @returns 201 if the application is sent successfully
+ * @returns 400 if the request is invalid
+ * @returns 404 if the property does not exist
+ */
+const rentalApplication = async (req: UserRequest, res: Response) => {
+  const data = validateRequest(applySchema, req.body, res);
+  if (!data) return;
+
+  const propertyId = req.params.id;
+  if (!propertyId) return res.status(400).json({ status: 400 });
+
+  const property = await propertyService.findById(propertyId);
+  if (!property) return res.status(404).json({ status: 404 });
+
+  if (!req.files || !req.files['idCard'] || !req.files['proofOfAddress']) {
+    return res.status(400).json({
+      status: 400,
+      message: '"proofOfAddress" and "idCard" files are required',
+    });
+  }
+
+  const idCard = req.files['idCard'][0];
+  const proofOfAddress = req.files['proofOfAddress'][0];
+
+  // Validate files types and sizes
+  let error = checkFile(idCard, 'file', res);
+  error = checkFile(proofOfAddress, 'file', res);
+  if (error) return;
+
+  // Save the user's birthdate and phone
+  const user = req.user;
+  user.birthDate = data.birthday;
+  user.phone = data.phone;
+  await userService.update(user);
+
+  // Save the application
+  await rentalApplicationService.apply(property, req.user, {
+    motivationText: data.motivationText,
+    idCardPath: idCard.path.replace('public/', ''),
+    proofOfAddressPath: proofOfAddress.path.replace('public/', ''),
+  });
+
+  // Send email to the user
+  mailerService.sendMail({
+    email: req.user.email,
+    subject: 'Dépot de candidature',
+    message: `Votre candidature pour le bien "${property.name}" a bien été prise reçue. Nous vous recontacterons dans les plus brefs délais.`,
+  });
+
+  res.status(201).json({ status: 201, message: 'Application sent' });
+};
+
+export const propertyController = {
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
+  rentalApplication,
+};

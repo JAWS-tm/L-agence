@@ -1,3 +1,5 @@
+import { Property } from "../services/property.type";
+
 export type User = {
   id: string;
   firstName: string;
@@ -5,4 +7,7 @@ export type User = {
   email: string;
   role: 'user' | 'admin';
   createdAt: Date;
+  birthDate?: Date;
+  phone?: string;
+  rentedProperty?: Property;
 };

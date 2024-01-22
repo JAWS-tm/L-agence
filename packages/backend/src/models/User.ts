@@ -26,6 +26,13 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
+  // Field needed for rental application
+  @Column({ nullable: true })
+  phone: string;
+
+  @Column({ nullable: true })
+  birthDate: Date;
+
   @Column()
   @Exclude()
   password: string;
@@ -38,13 +45,15 @@ export class User extends BaseEntity {
 
   @OneToOne(() => Property, (property) => property.tenant, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
+  
   @JoinColumn()
-  rentedProperty: Property;
+  rentedProperty: Property | null;
 
   @ManyToMany(() => Property)
   @JoinTable()
-  favourites: Property[]
+  favourites: Property[];
 
   serialize() {
     return instanceToPlain(this);

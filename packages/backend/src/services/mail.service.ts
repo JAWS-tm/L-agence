@@ -30,7 +30,7 @@ export const mailerService = {
       // Envoyer l'email
       await transporter.sendMail(mailOptions);
     } catch (error) {
-      console.log(error);
+      console.log('Error while sending email', error);
     }
   },
 };
