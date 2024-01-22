@@ -52,9 +52,15 @@ const PropertiesListing = () => {
     isSuccess: propertiesLoaded,
   } = useQuery('properties', propertyService.getAll);
 
+  console.log('ici', properties);
+
+  const propertiesList = (properties || [])?.filter(
+    (property) => !property?.tenant
+  );
+
   // Apply filters to properties
   const filteredProperties = filters
-    ? properties?.filter((property) => {
+    ? propertiesList?.filter((property) => {
         if (filters?.rooms !== 'all') {
           if (filters?.rooms === 'onePlus' && property.roomsCount < 1)
             return false;
@@ -77,7 +83,7 @@ const PropertiesListing = () => {
 
         return true;
       })
-    : properties;
+    : propertiesList;
 
   return (
     <>

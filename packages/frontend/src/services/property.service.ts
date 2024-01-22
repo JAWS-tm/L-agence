@@ -45,11 +45,11 @@ const getUserFavorites = async () => {
 
 const getUserApplications = async () => {
   return axiosClient.get('/user/rental/application');
-}
+};
 
 const getUserApplicationById = async (id: string) => {
   return axiosClient.get('/user/rental/application/' + id);
-}
+};
 
 type ApplyData = {
   motivationText: string;
@@ -79,5 +79,5 @@ export const propertyService = {
   getUserFavorites,
   apply,
   getUserApplications,
-  getUserApplicationById
+  getUserApplicationById,
 };

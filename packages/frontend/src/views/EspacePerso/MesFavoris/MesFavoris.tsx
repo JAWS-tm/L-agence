@@ -1,16 +1,15 @@
 import React from 'react';
 import styles from './MesFavoris.module.scss';
-import PropertyCard from '../../../views/PropertiesListing/components/PropertyCard/PropertyCard'
+import PropertyCard from '../../../views/PropertiesListing/components/PropertyCard/PropertyCard';
 import { propertyService } from '../../../services/property.service';
 import { useQuery } from 'react-query';
 
 const MesFavoris: React.FC = () => {
-
   const {
     data: propertiesData,
     isLoading: propertiesLoading,
     isSuccess: propertiesLoaded,
-  } = useQuery('properties', propertyService.getUserFavorites);
+  } = useQuery('propertiesFavourites', propertyService.getUserFavorites);
 
   const properties = propertiesData?.data || [];
 
@@ -22,8 +21,13 @@ const MesFavoris: React.FC = () => {
           <div className={styles.message}>Chargement...</div>
         ) : propertiesLoaded ? (
           properties!.length > 0 ? (
-            properties && properties.map((property: any) => (
-              <PropertyCard key={property.id} property={property} redirectTo={`/property/${property.id}`} />
+            properties &&
+            properties.map((property: any) => (
+              <PropertyCard
+                key={property.id}
+                property={property}
+                redirectTo={`/property/${property.id}`}
+              />
             ))
           ) : (
             <div className={styles.message}>

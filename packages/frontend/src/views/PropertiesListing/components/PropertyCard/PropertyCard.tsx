@@ -45,14 +45,11 @@ const PropertyCard = ({ property, redirectTo }: Props) => {
     setImage(CONFIG.PUBLIC_CONTENT_URL + '/' + property.imagesPaths[0]);
   }, [property.imagesPaths]);
 
-  const handleFavoriteClick = async () => {
-    const response = await propertyService.toggleFavorite(
-      property.id,
-      isFavorite
-    );
-    if (response.success) {
+  const handleFavoriteClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    await propertyService.toggleFavorite(property.id, isFavorite).then(() => {
       setIsFavorite(!isFavorite);
-    }
+    });
   };
 
   return (
