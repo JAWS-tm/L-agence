@@ -10,7 +10,7 @@ const InformationsPerso: React.FC = () => {
 
   const dataStr = user?.createdAt.toString().substring(0, 10);
 
-  const informations: { label: string; value: keyof User }[] = [
+  const informations: { label: string; value: keyof Omit<User, "rentedProperty"> }[] = [
     { label: 'Prénom', value: 'firstName' },
     { label: 'Nom', value: 'lastName' },
     { label: 'Email', value: 'email' },

@@ -35,7 +35,7 @@ type RegisterForm = z.infer<typeof registerValidation>;
 
 const Register = (props: Props) => {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useUserStore();
+  const { setUser: login, isAuthenticated } = useUserStore();
   const {
     register,
     handleSubmit,
