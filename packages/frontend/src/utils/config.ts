@@ -4,8 +4,8 @@ const DEV_CONFIG = {
 };
 
 const PROD_CONFIG = {
-  API_URL: 'https://api.lagence.io/api',
-  PUBLIC_CONTENT_URL: 'https://api.lagence.io',
+  API_URL: 'http://192.168.56.10:223/api',
+  PUBLIC_CONTENT_URL: 'http://192.168.56.10:223',
 };
 
 export const CONFIG =
