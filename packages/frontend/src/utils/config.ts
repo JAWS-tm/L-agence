@@ -8,5 +8,5 @@ const PROD_CONFIG = {
   PUBLIC_CONTENT_URL: 'http://192.168.56.10:3000',
 };
 
-export const CONFIG =https://github.com/JAWS-tm/L-agence/edit/master/packages/frontend/src/utils/config.ts
+export const CONFIG =
   process.env.NODE_ENV === 'production' ? PROD_CONFIG : DEV_CONFIG;
