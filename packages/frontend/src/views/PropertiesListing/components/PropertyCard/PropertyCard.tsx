@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 type Props = {
   property: Property;
+  redirectTo: string;
 };
 
 const typeTranslation: {
@@ -17,7 +18,7 @@ const typeTranslation: {
   house: 'Maison',
 };
 
-const PropertyCard = ({ property }: Props) => {
+const PropertyCard = ({ property, redirectTo }: Props) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [image, setImage] = useState<string | null>(null);
 
@@ -55,7 +56,7 @@ const PropertyCard = ({ property }: Props) => {
   };
 
   return (
-    <Link to={`/property/${property.id}`} className={styles.card}>
+    <Link to={redirectTo} className={styles.card}>
       <div className={styles.imageLayout}>
         <div className={styles.image}>
           <img

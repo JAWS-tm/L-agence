@@ -94,11 +94,19 @@ const login = async (req: Request, res: Response) => {
 
 const logout = (req: UserRequest, res: Response) => {
   req.session.destroy(() => {});
-  return res;
+  return res.sendStatus(200);
 };
 
-const getMe = (req: UserRequest, res: Response) => {
-  return res.json({ status: 200, user: req.user });
+const getMe = async (req: UserRequest, res: Response) => {
+  const me = await User.findOne({
+    where: {
+      id: req.user.id,
+    },
+    relations: ['rentedProperty'],
+  });
+  console.log('user', me);
+
+  return res.json({ status: 200, user: me });
 };
 
 export const authController = { register, login, logout, getMe };

@@ -107,7 +107,11 @@ const PropertiesListing = () => {
           ) : propertiesLoaded ? (
             filteredProperties!.length > 0 ? (
               filteredProperties!.map((property) => (
-                <PropertyCard key={property.id} property={property} />
+                <PropertyCard
+                  key={property.id}
+                  property={property}
+                  redirectTo={`/property/${property.id}`}
+                />
               ))
             ) : (
               <div className={styles.message}>

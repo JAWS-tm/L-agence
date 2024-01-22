@@ -1,21 +1,19 @@
 import React from 'react';
-import styles from './InformationsPerso.module.css';
-import useUserStore from '../../../user/useUserStore';
 import { User } from '../../../user/type';
-import Button from '../../../components/Button/Button';
-import toast from 'react-hot-toast';
+import useUserStore from '../../../user/useUserStore';
+import styles from './InformationsPerso.module.css';
 
 const InformationsPerso: React.FC = () => {
   const user = useUserStore((state) => state.user);
 
   const dataStr = user?.createdAt.toString().substring(0, 10);
 
-  const informations: { label: string; value: keyof User }[] = [
+  const informations = [
     { label: 'Prénom', value: 'firstName' },
     { label: 'Nom', value: 'lastName' },
     { label: 'Email', value: 'email' },
     { label: 'Compte créé le', value: 'createdAt' },
-  ];
+  ] satisfies { label: string; value: keyof User }[];
 
   if (!user) return <div>Pas d'informations.</div>;
 

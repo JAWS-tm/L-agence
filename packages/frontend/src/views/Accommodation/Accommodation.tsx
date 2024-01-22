@@ -63,7 +63,7 @@ const Accommodation = () => {
         </div>
 
         <div className={styles.secondView}>
-          <div style={{ flex: 3 }}>
+          <div className={styles.overviewWrapper}>
             <InfoCardLayout title="Aperçu">
               <OverviewCard property={property} />
             </InfoCardLayout>
@@ -72,7 +72,7 @@ const Accommodation = () => {
               <PropertyDetailsCard property={property} />
             </InfoCardLayout>
           </div>
-          <div style={{ flex: 1 }}>
+          <div className={styles.applyWrapper}>
             <InfoCardLayout title="Intéressé(e) ?">
               <div className={styles.interested}>
                 <p className={styles.message}>

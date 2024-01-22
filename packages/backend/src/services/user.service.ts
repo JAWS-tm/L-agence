@@ -95,7 +95,7 @@ const addRental = async (userId: string, propertyId: string) => {
   return { user, property };
 };
 
-const removeRental = async (userId: string, propertyId: string) => {
+const removeRentalAdmin = async (userId: string, propertyId: string) => {
   const user = await User.findOne({
     where: {
       id: userId,
@@ -110,7 +110,17 @@ const removeRental = async (userId: string, propertyId: string) => {
   return { user, property };
 };
 
-export const userService = {
+const removeRental = async (userId: string) => {
+  const user = await User.findOne({
+    where: {
+        id: userId
+    }
+  });
+
+  return {user}
+};
+
+export const userService = { 
   add,
   remove,
   findAll,
@@ -120,6 +130,7 @@ export const userService = {
   addFavourites,
   removeFavourites,
   addRental,
+  removeRentalAdmin,
   removeRental,
-  update,
+  update
 };
