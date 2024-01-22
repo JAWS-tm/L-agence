@@ -17,8 +17,14 @@
 
   .secondView {
     display: flex;
-    gap: 20px;
+    justify-content: center;
+    gap: 40px;
     width: 100%;
+    .overviewWrapper {
+    }
+    .applyWrapper {
+      width: 300px;
+    }
   }
 
   .interested {
