@@ -13,8 +13,6 @@ export class RentalApplication extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // @Column()
-  // foreign key to user
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
