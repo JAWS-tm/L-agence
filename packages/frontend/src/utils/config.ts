@@ -4,8 +4,8 @@ const DEV_CONFIG = {
 };
 
 const PROD_CONFIG = {
-  API_URL: process.env.VITE_API + '/api',
-  PUBLIC_CONTENT_URL: process.env.VITE_API,
+  API_URL: 'https://api.lagence.io/api',
+  PUBLIC_CONTENT_URL: 'https://api.lagence.io',
 };
 
 export const CONFIG =
