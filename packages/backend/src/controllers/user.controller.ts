@@ -4,11 +4,28 @@ import { userService } from '../services/user.service';
 import { UserRequest } from '../types/express';
 import { Response } from 'express';
 
+const getUsers = async (req: UserRequest, res: Response) => {
+    return res.json(
+        await userService.findAll()
+    )
+}
+
+const removeUser = async (req: UserRequest, res: Response) => {
+    const { userId } = req.params;
+
+   await userService.remove(userId);
+
+  return res.status(200).json({ status: 200 });
+}
+
+
+
 const getFavourites = async (req: UserRequest, res: Response) => {
     const favourites = await userService.getFavourites(req.user.id)
 
     res.json(favourites)
 }
+
 
 const addFavourites = async (req: UserRequest, res: Response) => {
     const { propertyId } = req.body;
@@ -105,4 +122,4 @@ const getAllRental = async (req: UserRequest, res: Response)=> {
     return res.json(usersWithRental)
 };
 
-export const userController = {getFavourites, addFavourites, removeFavourites, addRental, removeRentalAdmin, removeRental, getAllRental}
+export const userController = {getUsers, removeUser, getFavourites, addFavourites, removeFavourites, addRental, removeRentalAdmin, removeRental, getAllRental}

@@ -13,6 +13,7 @@ import { Property } from '../models/Property';
 import { rentalApplicationService } from '../services/rentalApplication.service';
 import { mailerService } from '../services/mail.service';
 import { userService } from '../services/user.service';
+import path from 'path';
 
 const create = async (req: UserRequest, res: Response) => {
   if (!req.files) {
@@ -35,7 +36,7 @@ const create = async (req: UserRequest, res: Response) => {
 
   const newProperty = Property.create(data);
   newProperty.imagesPaths = images.map((image) =>
-    image.path.replace('public/', '')
+    image.path.replace(/public[\\\/]/, '')
   );
 
   const property = await propertyService.add(newProperty);
@@ -71,6 +72,7 @@ const getAll = async (req: Request, res: Response) => {
     .status(200)
     .json({ status: 200, properties: instanceToPlain(properties) });
 };
+
 
 const getById = async (req: Request, res: Response) => {
   const property = await propertyService.findById(req.params.id);
@@ -121,11 +123,13 @@ const rentalApplication = async (req: UserRequest, res: Response) => {
   user.phone = data.phone;
   await userService.update(user);
 
+
   // Save the application
   await rentalApplicationService.apply(property, req.user, {
     motivationText: data.motivationText,
-    idCardPath: idCard.path.replace('public/', ''),
-    proofOfAddressPath: proofOfAddress.path.replace('public/', ''),
+    idCardPath: idCard.path.replace(/public[\\\/]/, ''),
+    // idCardPath: idCard.path.replace('public/', ''),
+    proofOfAddressPath: proofOfAddress.path.replace(/public[\\\/]/, ''),
   });
 
   // Send email to the user
@@ -138,6 +142,13 @@ const rentalApplication = async (req: UserRequest, res: Response) => {
   res.status(201).json({ status: 201, message: 'Application sent' });
 };
 
+const getAllApply = async (req: Request, res: Response) => {
+  return res.json(
+    await rentalApplicationService.getAll()
+  )
+};
+
+
 export const propertyController = {
   getAll,
   getById,
@@ -145,4 +156,5 @@ export const propertyController = {
   update,
   remove,
   rentalApplication,
+  getAllApply,
 };

@@ -9,6 +9,13 @@ propertyRouter.get('/', propertyController.getAll);
 propertyRouter.get('/:id', propertyController.getById);
 
 propertyRouter.post(
+  '/apply',
+  isAuthenticated,
+  isAdmin,
+  propertyController.getAllApply
+);
+
+propertyRouter.post(
   '/',
   isAuthenticated,
   isAdmin,
