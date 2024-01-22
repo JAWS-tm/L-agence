@@ -148,6 +148,29 @@ const getAllApply = async (req: Request, res: Response) => {
   )
 };
 
+const changeApplicationState = async (req: UserRequest, res: Response) => {
+  const applicationId = req.params.id;
+  const state = req.params.state as "accepted" | "refused";
+
+  if (!state || !applicationId) return res.status(404).json({ status: 404, message: 'Application not found' });
+
+  const application = await rentalApplicationService.getById(applicationId);
+  if (!application) return res.status(404).json({ status: 404, message: 'Application not found' });
+
+  await rentalApplicationService.changeState(application, state)
+
+  if (state === "accepted") {
+    mailerService.sendMail({
+      email: application.user.email,
+      subject: "Demande de logement acceptée",
+      message: `Votre de demande de logement pour "${application.property.name}" a été acceptée. Vous pouvez valider sur l'application web`
+    })
+  }
+
+  return res.status(200).json({ status: 200, message: 'State changed' });
+}
+
+
 
 export const propertyController = {
   getAll,
@@ -157,4 +180,5 @@ export const propertyController = {
   remove,
   rentalApplication,
   getAllApply,
+  changeApplicationState
 };

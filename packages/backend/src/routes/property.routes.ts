@@ -8,12 +8,7 @@ const propertyRouter = Router();
 propertyRouter.get('/', propertyController.getAll);
 propertyRouter.get('/:id', propertyController.getById);
 
-propertyRouter.post(
-  '/apply',
-  isAuthenticated,
-  isAdmin,
-  propertyController.getAllApply
-);
+
 
 propertyRouter.post(
   '/',
@@ -45,5 +40,20 @@ propertyRouter.post(
   ]),
   propertyController.rentalApplication
 );
+
+propertyRouter.post(
+  '/apply',
+  isAuthenticated,
+  isAdmin,
+  propertyController.getAllApply
+);
+
+propertyRouter.post(
+  '/apply/:id/:state',
+  isAuthenticated,
+  isAdmin,
+  propertyController.changeApplicationState
+);
+
 
 export default propertyRouter;

@@ -13,9 +13,9 @@ const getUsers = async (req: UserRequest, res: Response) => {
 const removeUser = async (req: UserRequest, res: Response) => {
     const { userId } = req.params;
 
-   await userService.remove(userId);
+    await userService.remove(userId);
 
-  return res.status(200).json({ status: 200 });
+    return res.status(200).json({ status: 200 });
 }
 
 
