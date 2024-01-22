@@ -133,4 +133,4 @@ const getRental = async (req: UserRequest, res: Response)=> {
     return res.json(userWithRental)
 };
 
-export const userController = {getUsers, getFavourites, addFavourites, removeFavourites, addRental, removeRentalAdmin, removeRental, getAllRental, getRental}
+export const userController = {getUsers, getFavourites, addFavourites, removeFavourites, addRental, removeRentalAdmin, removeRental, getAllRental, getRental, removeUser}
