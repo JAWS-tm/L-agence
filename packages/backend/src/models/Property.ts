@@ -4,7 +4,6 @@ import {
   Column,
   BaseEntity,
   OneToOne,
-
 } from 'typeorm';
 import { User } from './User';
 

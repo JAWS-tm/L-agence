@@ -15,7 +15,7 @@ propertyRouter.post(
   uploadMiddleware.array('images', 10),
   propertyController.create
 );
-propertyRouter.put('/', isAuthenticated, isAdmin, propertyController.update);
+propertyRouter.put('/:id', isAuthenticated, isAdmin, propertyController.update);
 propertyRouter.delete(
   '/:id',
   isAuthenticated,

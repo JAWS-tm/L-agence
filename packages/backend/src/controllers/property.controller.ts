@@ -43,14 +43,33 @@ const create = async (req: UserRequest, res: Response) => {
   res.status(201).json({ status: 201, property });
 };
 
-const update = async (req: UserRequest, res: Response, next: NextFunction) => {
+const update = async (req: UserRequest, res: Response) => {
+  console.log(req.body);
+
+  const propertyId = req.params.id;
+  if (!propertyId) return res.status(400).json({ status: 400 });
+
+  const property = await propertyService.findById(propertyId);
+  if (!property) return res.status(404).json({ status: 404 });
+
   const data = validateRequest(updatePropertySchema, req.body, res);
   if (!data) return;
 
+  console.log('Update property', property);
+
+  console.log({
+    ...property,
+    ...data, // This will override the property's fields with the data's fields
+  });
+
   try {
-    await propertyService.update(data);
+    const propertyToUpdate = Property.create({
+      ...property,
+      ...data, // This will override the property's fields with the data's fields
+    });
+    await propertyService.update(propertyToUpdate);
   } catch (error) {
-    return next(error);
+    return res.json({ status: 400, message: error.message });
   }
 
   res.status(200).json({ status: 201 });

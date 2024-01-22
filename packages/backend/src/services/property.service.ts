@@ -13,7 +13,7 @@ const add = async (property: DeepPartial<Property>) => {
   return await findById(insertedProp.identifiers[0].id);
 };
 
-const update = async (property: DeepPartial<Property>) => {
+const update = async (property: Property) => {
   const propertyExists = await Property.findOne({
     where: { id: property.id },
   });
@@ -22,12 +22,7 @@ const update = async (property: DeepPartial<Property>) => {
     throw new AppError('Cannot update a property that does not exist');
   }
 
-  return await Property.update(
-    {
-      id: property.id,
-    },
-    property
-  );
+  return await Property.update(property.id!, property);
 };
 
 const remove = async (propertyId: string) => {
