@@ -124,5 +124,6 @@ export const userService = {
   removeFavourites,
   addRental,
   removeRentalAdmin,
-  removeRental
+  removeRental,
+  update
 };
