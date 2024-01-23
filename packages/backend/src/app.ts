@@ -30,13 +30,12 @@ app.use(
     secret: 'lagence',
     resave: false,
     saveUninitialized: false,
+    rolling: true,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
+      // secure: process.env.NODE_ENV === 'production',
     },
     // Store session on file system to persist between server restarts
-    store: new (FileStore(session))({
-      // path: './sessions',
-    }),
+    store: new (FileStore(session))(),
   })
 );
 app.use(express.static('public'));

@@ -93,8 +93,10 @@ const login = async (req: Request, res: Response) => {
 };
 
 const logout = (req: UserRequest, res: Response) => {
-  req.session.destroy(() => {});
-  return res.sendStatus(200);
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    return res.sendStatus(200);
+  });
 };
 
 const getMe = async (req: UserRequest, res: Response) => {
