@@ -5,6 +5,8 @@ import { propertyService } from '../../../../services/property.service';
 import { CONFIG } from '../../../../utils/config';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useUserStore from '../../../../user/useUserStore';
+import toast from 'react-hot-toast';
 
 type Props = {
   property: Property;
@@ -19,6 +21,7 @@ const typeTranslation: {
 };
 
 const PropertyCard = ({ property, redirectTo }: Props) => {
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const [isFavorite, setIsFavorite] = useState(false);
   const [image, setImage] = useState<string | null>(null);
 
@@ -36,7 +39,7 @@ const PropertyCard = ({ property, redirectTo }: Props) => {
         setIsFavorite(isPropertyFavorite);
       }
     };
-    fetchUserFavorites();
+    if (isAuthenticated) fetchUserFavorites();
 
     if (!property.imagesPaths.length) {
       setImage(PlaceholderImg);
@@ -47,6 +50,11 @@ const PropertyCard = ({ property, redirectTo }: Props) => {
 
   const handleFavoriteClick = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+
+    if (!isAuthenticated) {
+      toast.error('Vous devez être connecté pour ajouter un bien en favoris');
+      return;
+    }
     await propertyService.toggleFavorite(property.id, isFavorite).then(() => {
       setIsFavorite(!isFavorite);
     });
