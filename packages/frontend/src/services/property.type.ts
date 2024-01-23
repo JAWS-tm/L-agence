@@ -1,3 +1,5 @@
+import { User } from '../user/type';
+
 export type PropertyType = 'house' | 'apartment';
 
 export type Property = {
@@ -11,7 +13,7 @@ export type Property = {
   roomsCount: number;
   surface: number;
   type: PropertyType;
-  // tenant: ;
+  tenant?: User;
 };
 
 export type Favorite = {

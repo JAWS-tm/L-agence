@@ -1,10 +1,6 @@
-import { log } from 'console';
 import { Property } from '../models/Property';
 import { RentalApplication } from '../models/RentalApplication';
 import { User } from '../models/User';
-import { UserRequest } from '../types/express';
-import { Response } from 'express';
-import { mailerService } from './mail.service';
 
 type ApplicationForm = {
   motivationText: string;
@@ -26,8 +22,8 @@ const getAll = async () => {
   const apply = await RentalApplication.find({
     relations: {
       property: true,
-      user: true
-    }
+      user: true,
+    },
   });
   console.log(apply);
   if (apply) return apply;
@@ -39,22 +35,19 @@ const changeState = async (
   state: 'accepted' | 'refused'
 ) => {
   application.state = state;
-  
+
   return await application.save();
 };
 
-const getById = async (id : string) => {
-  const application = await RentalApplication.findOne(
-    {
-      where: { id },
-      relations: {
-        property: true,
-        user: true
-      }
+const getById = async (id: string) => {
+  const application = await RentalApplication.findOne({
+    where: { id },
+    relations: {
+      property: true,
+      user: true,
     },
-  )
+  });
 
-
-  return application
-}
+  return application;
+};
 export const rentalApplicationService = { apply, changeState, getAll, getById };

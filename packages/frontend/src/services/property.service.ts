@@ -34,7 +34,7 @@ const toggleFavorite = async (
     });
     return response.data;
   } catch (error) {
-    toast.error('Merci de vous connecter pour ajouter un favoris');
+    toast.error("Une erreur est survenue lors de l'ajout du favori");
     throw error;
   }
 };

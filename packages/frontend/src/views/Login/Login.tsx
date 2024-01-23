@@ -22,9 +22,16 @@ const loginValidation = z.object({
 
 type LoginForm = z.infer<typeof loginValidation>;
 
-const Login = (props: Props) => {
+const Login = () => {
   const navigate = useNavigate();
-  const { setUser: login, isAuthenticated ,loadUser, requestedPath, setRequestedPath} = useUserStore();
+  const {
+    setUser: login,
+    isAuthenticated,
+    loadUser,
+    requestedPath,
+    setRequestedPath,
+  } = useUserStore();
+
   const {
     register,
     handleSubmit,

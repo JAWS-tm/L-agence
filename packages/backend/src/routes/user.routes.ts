@@ -5,21 +5,17 @@ import { userController } from '../controllers/user.controller';
 const userRouter = Router();
 
 userRouter.get('/', isAuthenticated, isAdmin, userController.getUsers);
-userRouter.delete(
-  '/:userId',
-  isAuthenticated,
-  isAdmin,
-  userController.removeUser
-);
 
+// Favourites
+userRouter.get('/favourites', isAuthenticated, userController.getFavourites);
 userRouter.post('/favourites', isAuthenticated, userController.addFavourites);
 userRouter.delete(
   '/favourites',
   isAuthenticated,
   userController.removeFavourites
 );
-userRouter.get('/favourites', isAuthenticated, userController.getFavourites);
 
+// Rental management
 userRouter.post('/rental', isAuthenticated, userController.addRental);
 userRouter.delete(
   '/rental/:userId/:propertyId',
@@ -45,6 +41,14 @@ userRouter.get(
   '/rental/application/:id',
   isAuthenticated,
   userController.getRentalApplicationById
+);
+
+// In the end of the file because otherwise it would match the others delete routes (like /favourites)
+userRouter.delete(
+  '/:userId',
+  isAuthenticated,
+  isAdmin,
+  userController.removeUser
 );
 
 export default userRouter;

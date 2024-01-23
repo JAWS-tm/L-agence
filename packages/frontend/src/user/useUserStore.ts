@@ -13,21 +13,33 @@ type UserStore = {
   loadUser: () => Promise<void>;
 };
 
-const useUserStore = create<UserStore>((set) => ({
+const useUserStore = create<UserStore>((set, get) => ({
   user: undefined,
   isAuthenticated: false,
   requestedPath: null,
 
-  setUser: (user: User) => set({ user, isAuthenticated: true }),
+  setUser: (user: User) => {
+    localStorage.setItem('isAuthenticated', 'true');
+    set({ user, isAuthenticated: true });
+  },
   logout: () => {
     authService.logout();
+    localStorage.removeItem('isAuthenticated');
     set({ user: undefined, isAuthenticated: false });
   },
   setRequestedPath: (path: string | null) => set({ requestedPath: path }),
   loadUser: async () => {
+    const wasAuthenticated = localStorage.getItem('isAuthenticated'); // check if user was authenticated the last time he visited the app
+    if (!wasAuthenticated) return; // avoid 401
+
+    if (get().isAuthenticated) return; // avoid unnecessary requests
+
     try {
       const user = await authService.getMe();
-      if (user) set({ user, isAuthenticated: true });
+      if (user) {
+        localStorage.setItem('isAuthenticated', 'true');
+        set({ user, isAuthenticated: true });
+      }
     } catch (err) {
       console.log('Error while loading user', err);
     }

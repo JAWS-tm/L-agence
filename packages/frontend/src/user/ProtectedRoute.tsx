@@ -9,6 +9,10 @@ const ProtectedRoute = () => {
   const loadUser = useUserStore((state) => state.loadUser);
 
   useEffect(() => {
+    if (isAuthenticated) {
+      setLoadingUser(false);
+      return;
+    }
     loadUser().finally(() => setLoadingUser(false));
   }, []);
 

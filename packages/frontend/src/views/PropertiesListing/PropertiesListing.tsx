@@ -52,8 +52,7 @@ const PropertiesListing = () => {
     isSuccess: propertiesLoaded,
   } = useQuery('properties', propertyService.getAll);
 
-  console.log('ici', properties);
-
+  // Remove properties with a tenant
   const propertiesList = (properties || [])?.filter(
     (property) => !property?.tenant
   );

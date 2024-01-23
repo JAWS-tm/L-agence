@@ -5,11 +5,14 @@ import { uploadMiddleware } from '../utils/file';
 
 const propertyRouter = Router();
 
+/*----------------------*/
+/* GET methods */
 propertyRouter.get('/', propertyController.getAll);
 propertyRouter.get('/:id', propertyController.getById);
 
-
-
+/*----------------------*/
+/* POST methods */
+// Add a new property
 propertyRouter.post(
   '/',
   isAuthenticated,
@@ -17,14 +20,14 @@ propertyRouter.post(
   uploadMiddleware.array('images', 10),
   propertyController.create
 );
-propertyRouter.put('/:id', isAuthenticated, isAdmin, propertyController.update);
-propertyRouter.delete(
-  '/:id',
+// get all rental application
+propertyRouter.post(
+  '/apply',
   isAuthenticated,
   isAdmin,
-  propertyController.remove
+  propertyController.getAllApply
 );
-
+// Apply for a property
 propertyRouter.post(
   '/:id/apply',
   isAuthenticated,
@@ -40,14 +43,7 @@ propertyRouter.post(
   ]),
   propertyController.rentalApplication
 );
-
-propertyRouter.post(
-  '/apply',
-  isAuthenticated,
-  isAdmin,
-  propertyController.getAllApply
-);
-
+// Update the state of a rental application
 propertyRouter.post(
   '/apply/:id/:state',
   isAuthenticated,
@@ -55,5 +51,19 @@ propertyRouter.post(
   propertyController.changeApplicationState
 );
 
+/*----------------------*/
+// DELETE methods
+// Delete a property
+propertyRouter.delete(
+  '/:id',
+  isAuthenticated,
+  isAdmin,
+  propertyController.remove
+);
+
+/*----------------------*/
+// PUT methods
+// Update a property
+propertyRouter.put('/:id', isAuthenticated, isAdmin, propertyController.update);
 
 export default propertyRouter;

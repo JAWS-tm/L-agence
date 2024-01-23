@@ -1,18 +1,26 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import Navbar from './components/Navbar/Navbar.tsx';
-import EspacePerso from './views/EspacePerso/EspacePerso.tsx';
-import ProtectedRoute from './user/ProtectedRoute.tsx';
-import Login from './views/Login/Login.tsx';
-import Register from './views/Register/Register.tsx';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Contact from './components/Contact/Contact.tsx';
+import Navbar from './components/Navbar/Navbar.tsx';
+import ProtectedRoute from './user/ProtectedRoute.tsx';
+import useUserStore from './user/useUserStore.ts';
+import Accommodation from './views/Accommodation/Accommodation.tsx';
+import EspacePerso from './views/EspacePerso/EspacePerso.tsx';
+import OnGoingApplication from './views/EspacePerso/OnGoingApplication/OnGoingApplication.tsx';
+import Login from './views/Login/Login.tsx';
 import NotFound from './views/NotFound/NotFound.tsx';
 import PropertiesListing from './views/PropertiesListing/PropertiesListing.tsx';
-import Accommodation from './views/Accommodation/Accommodation.tsx';
+import Register from './views/Register/Register.tsx';
 import RentalApplication from './views/RentalApplication/RentalApplication.tsx';
-import OnGoingApplication from './views/EspacePerso/OnGoingApplication/OnGoingApplication.tsx'
+import { useEffect } from 'react';
 
 const App = () => {
+  const loadUser = useUserStore((state) => state.loadUser);
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
   return (
     <BrowserRouter>
       <Navbar />
@@ -28,7 +36,10 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/my-account" element={<EspacePerso />} />
             <Route path="/property/:id/apply" element={<RentalApplication />} />
-            <Route path="/ongoingapplication/:id" element={<OnGoingApplication />} />
+            <Route
+              path="/ongoingapplication/:id"
+              element={<OnGoingApplication />}
+            />
           </Route>
 
           <Route path="*" element={<Navigate to={'/404'} />} />
