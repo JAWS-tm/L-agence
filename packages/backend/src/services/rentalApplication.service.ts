@@ -25,7 +25,7 @@ const getAll = async () => {
       user: true,
     },
   });
-  console.log(apply);
+
   if (apply) return apply;
   else return null;
 };

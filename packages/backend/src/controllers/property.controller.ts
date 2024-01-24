@@ -92,7 +92,6 @@ const getAll = async (req: Request, res: Response) => {
     .json({ status: 200, properties: instanceToPlain(properties) });
 };
 
-
 const getById = async (req: Request, res: Response) => {
   const property = await propertyService.findById(req.params.id);
 
@@ -142,7 +141,6 @@ const rentalApplication = async (req: UserRequest, res: Response) => {
   user.phone = data.phone;
   await userService.update(user);
 
-
   // Save the application
   await rentalApplicationService.apply(property, req.user, {
     motivationText: data.motivationText,
@@ -162,34 +160,36 @@ const rentalApplication = async (req: UserRequest, res: Response) => {
 };
 
 const getAllApply = async (req: Request, res: Response) => {
-  return res.json(
-    await rentalApplicationService.getAll()
-  )
+  return res.json(await rentalApplicationService.getAll());
 };
 
 const changeApplicationState = async (req: UserRequest, res: Response) => {
   const applicationId = req.params.id;
-  const state = req.params.state as "accepted" | "refused";
+  const state = req.params.state as 'accepted' | 'refused';
 
-  if (!state || !applicationId) return res.status(404).json({ status: 404, message: 'Application not found' });
+  if (!state || !applicationId)
+    return res
+      .status(400)
+      .json({ status: 400, message: 'State or application id missing' });
 
   const application = await rentalApplicationService.getById(applicationId);
-  if (!application) return res.status(404).json({ status: 404, message: 'Application not found' });
+  if (!application)
+    return res
+      .status(404)
+      .json({ status: 404, message: 'Application not found' });
 
-  await rentalApplicationService.changeState(application, state)
+  await rentalApplicationService.changeState(application, state);
 
-  if (state === "accepted") {
+  if (state === 'accepted') {
     mailerService.sendMail({
       email: application.user.email,
-      subject: "Demande de logement acceptée",
-      message: `Votre de demande de logement pour "${application.property.name}" a été acceptée. Vous pouvez valider sur l'application web`
-    })
+      subject: 'Demande de logement acceptée',
+      message: `Votre de demande de logement pour "${application.property.name}" a été acceptée. Vous pouvez valider sur l'application web`,
+    });
   }
 
   return res.status(200).json({ status: 200, message: 'State changed' });
-}
-
-
+};
 
 export const propertyController = {
   getAll,
@@ -199,5 +199,5 @@ export const propertyController = {
   remove,
   rentalApplication,
   getAllApply,
-  changeApplicationState
+  changeApplicationState,
 };

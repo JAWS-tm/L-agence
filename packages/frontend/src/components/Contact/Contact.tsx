@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import styles from './Contact.module.css';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
+import { authService } from '../../services';
 import TextArea from '../TextArea/TextArea';
+import styles from './Contact.module.css';
 
 interface FormData {
   email: string;
@@ -35,10 +35,13 @@ const Contact: React.FC = () => {
     e.preventDefault();
 
     try {
-      const backendUrl = 'http://localhost:3000/api/contact/post';
       setLoading(true);
       // Envoi des données au backend
-      await axios.post(backendUrl, formData);
+      await authService.contact(
+        formData.email,
+        formData.subject,
+        formData.message
+      );
       setLoading(false);
       // Réinitialiser le formulaire après l'envoi réussi
       setFormData({

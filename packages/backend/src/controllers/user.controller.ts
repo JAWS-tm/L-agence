@@ -5,6 +5,8 @@ import { UserRequest } from '../types/express';
 import { Response } from 'express';
 import { RentalApplication } from '../models/RentalApplication';
 import { Property } from '../models/Property';
+import { propertyService } from '../services/property.service';
+import { mailerService } from '../services/mail.service';
 
 const getUsers = async (req: UserRequest, res: Response) => {
   return res.json(await userService.findAll());
@@ -73,23 +75,38 @@ const removeFavourites = async (req: UserRequest, res: Response) => {
     .json({ success: true, message: 'Property removed from favourites.' });
 };
 
-const addRental = async (req: UserRequest, res: Response) => {
+const acceptRental = async (req: UserRequest, res: Response) => {
   const { rentalAppId } = req.body;
-  const userId = req.user.id;
+  const user = req.user;
 
-  const { rentalApplication, user } = await userService.addRental(
-    rentalAppId,
-    userId
+  const rentalApplication = await userService.getRentalApplicationDetail(
+    rentalAppId
   );
+  if (!rentalApplication) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Rental application doesn't exist." });
+  }
 
-  if (!user) {
-    return res.status(404).json({ success: false, message: 'User not found.' });
+  if (rentalApplication.user.id !== user.id) {
+    return res
+      .status(403)
+      .json({ success: false, message: 'User not authorized.' });
   }
 
   if (rentalApplication?.state == 'accepted' && rentalApplication.property) {
     const property = rentalApplication.property;
     property.tenant = user;
     await property.save();
+
+    mailerService.sendMail({
+      email: user.email,
+      subject: 'Logement accepté',
+      message: `Vous avez accepté le logement ${property.name}. Vous pouvez le retrouver dans vos locations. Nous vous attendons à l'agence pour signer le contrat de location.`,
+    });
+
+    await rentalApplication.remove();
+
     res
       .status(200)
       .json({ success: true, message: 'Rental added successfully.' });
@@ -97,18 +114,19 @@ const addRental = async (req: UserRequest, res: Response) => {
 };
 
 const removeRentalAdmin = async (req: UserRequest, res: Response) => {
-  const propertyId = req.params.userId;
-  const userId = req.params.propertyId;
+  const propertyId = req.params.propertyId;
+  const userId = req.params.userId;
 
-  const { user, property } = await userService.removeRentalAdmin(
-    userId,
-    propertyId
-  );
+  const user = await userService.findById(userId);
+  if (!user) {
+    return res.status(404).json({ success: false, message: 'User not found.' });
+  }
 
-  if (!user || !property) {
+  const property = await propertyService.findById(propertyId);
+  if (!property) {
     return res
       .status(404)
-      .json({ success: false, message: 'User or property not found.' });
+      .json({ success: false, message: 'Property not found.' });
   }
 
   property.tenant = null;
@@ -122,8 +140,7 @@ const removeRentalAdmin = async (req: UserRequest, res: Response) => {
 const removeRental = async (req: UserRequest, res: Response) => {
   const userId = req.user.id;
 
-  const { user } = await userService.removeRental(userId);
-
+  const user = await userService.findById(userId);
   if (!user) {
     return res.status(404).json({ success: false, message: 'User not found.' });
   }
@@ -182,7 +199,7 @@ export const userController = {
   getFavourites,
   addFavourites,
   removeFavourites,
-  addRental,
+  acceptRental,
   removeRentalAdmin,
   removeRental,
   getAllRental,

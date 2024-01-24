@@ -106,7 +106,6 @@ const getMe = async (req: UserRequest, res: Response) => {
     },
     relations: ['rentedProperty'],
   });
-  console.log('user', me);
 
   return res.json({ status: 200, user: me });
 };

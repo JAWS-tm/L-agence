@@ -32,8 +32,6 @@ const useUserStore = create<UserStore>((set, get) => ({
     const wasAuthenticated = localStorage.getItem('isAuthenticated'); // check if user was authenticated the last time he visited the app
     if (!wasAuthenticated) return; // avoid 401
 
-    if (get().isAuthenticated) return; // avoid unnecessary requests
-
     try {
       const user = await authService.getMe();
       if (user) {
@@ -41,7 +39,7 @@ const useUserStore = create<UserStore>((set, get) => ({
         set({ user, isAuthenticated: true });
       }
     } catch (err) {
-      console.log('Error while loading user', err);
+      console.error('Error while loading user', err);
     }
   },
 }));

@@ -1,10 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
-import './navbar.scss';
-import Button from '../Button/Button';
+import { Link } from 'react-router-dom';
 import logo from '../../assets/l-agence_logo.png';
+import Button from '../Button/Button';
+import './navbar.scss';
 
 const Navbar = () => {
-  const navigate = useNavigate();
   return (
     <div className="navbar">
       <Link to={'/'} className="logo">
@@ -20,12 +19,14 @@ const Navbar = () => {
           Contact
         </Link>
       </div>
-      <Button
-        value="Mon compte"
-        type="primary"
-        onClick={() => navigate('/my-account')}
-        icon={<i className="fa-solid fa-user" />}
-      />
+
+      <Link to={'/my-account'} className="item">
+        <Button
+          value="Mon compte"
+          type="primary"
+          icon={<i className="fa-solid fa-user" />}
+        />
+      </Link>
     </div>
   );
 };

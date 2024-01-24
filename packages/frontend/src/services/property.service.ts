@@ -43,15 +43,28 @@ const getUserFavorites = async () => {
   return axiosClient.get('/user/favourites');
 };
 
-const getUserApplications = async () => {
+type RentalApplication = {
+  id: string;
+  property: Property;
+  motivationText: string;
+  idCardPath: string;
+  proofOfAddressPath: string;
+  state: 'accepted' | 'refused' | 'pending';
+};
+
+const getUserApplications = async (): Promise<RentalApplication[]> => {
   return axiosClient.get('/user/rental/application');
 };
 
-const getUserApplicationById = async (id: string) => {
-  return axiosClient.get('/user/rental/application/' + id);
+const getUserApplicationById = async (
+  id: string
+): Promise<RentalApplication> => {
+  const res = await axiosClient.get('/user/rental/application/' + id);
+
+  return res.data;
 };
 
-type ApplyData = {
+type ApplyFormData = {
   motivationText: string;
   idCard: File;
   proofOfAddress: File;
@@ -60,7 +73,7 @@ type ApplyData = {
   // saveForLater: boolean;
 };
 
-const apply = async (propertyId: string, form: ApplyData) => {
+const apply = async (propertyId: string, form: ApplyFormData) => {
   // use form data to send files
   const formData = new FormData();
   formData.append('motivationText', form.motivationText);
@@ -72,6 +85,14 @@ const apply = async (propertyId: string, form: ApplyData) => {
   return axiosClient.post(`/properties/${propertyId}/apply`, formData);
 };
 
+const acceptProperty = async (applicationId: string) => {
+  return await axiosClient.post(`/user/rental/accept`, { id: applicationId });
+};
+
+const leaveProperty = async () => {
+  return await axiosClient.post(`/user/rental`);
+};
+
 export const propertyService = {
   getAll,
   getById,
@@ -80,4 +101,6 @@ export const propertyService = {
   apply,
   getUserApplications,
   getUserApplicationById,
+  acceptProperty,
+  leaveProperty,
 };

@@ -68,7 +68,6 @@ const PropertyCard = ({ property, redirectTo }: Props) => {
             src={image ?? PlaceholderImg}
             alt="Home preview"
             onError={() => {
-              console.log('failed to load image', image);
               setImage(PlaceholderImg);
             }}
           />

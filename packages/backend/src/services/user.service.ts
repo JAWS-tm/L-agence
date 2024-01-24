@@ -1,6 +1,6 @@
-import { User } from '../models/User';
 import { Property } from '../models/Property';
 import { RentalApplication } from '../models/RentalApplication';
+import { User } from '../models/User';
 
 const add = async (user: User) => {
   await User.create(user);
@@ -12,7 +12,7 @@ const remove = async (userId: string) => {
 };
 
 const findAll = async () => {
-  const user =await User.find();
+  const user = await User.find();
   if (user) return user;
   else return null;
 };
@@ -81,80 +81,49 @@ const removeFavourites = async (userId: string, propertyId: string) => {
   return { user, property };
 };
 
-const addRental = async (rentalAppId: string, userId: string) => {
+const getRentalApplicationDetail = async (rentalAppId: string) => {
   const rentalApplication = await RentalApplication.findOne({
     where: {
-      id: rentalAppId
+      id: rentalAppId,
     },
     relations: {
-      property: true
-    }
-  });
-  
-  const user = await User.findOne({
-    where: {
-      id: userId,
+      property: true,
+      user: true,
     },
   });
 
-  return { user, rentalApplication };
-};
-
-
-const removeRentalAdmin = async (userId: string, propertyId: string) => {
-  const user = await User.findOne({
-    where: {
-      id: userId,
-    },
-  });
-  const property = await Property.findOne({
-    where: {
-      id: propertyId,
-    },
-  });
-
-  return { user, property };
-};
-
-const removeRental = async (userId: string) => {
-  const user = await User.findOne({
-    where: {
-        id: userId
-    }
-  });
-
-  return {user}
+  return rentalApplication;
 };
 
 const getRentalApplication = async (userId: string) => {
   const userApplications = await RentalApplication.find({
     where: {
       user: {
-          id: userId
-      }
+        id: userId,
+      },
     },
     relations: {
-      property: true
-    }
-  })
+      property: true,
+    },
+  });
   if (userApplications) return userApplications;
   else return [];
-}
+};
 
 const getRentalApplicationById = async (id: string) => {
-  const userApplication = await RentalApplication.find({
+  const userApplication = await RentalApplication.findOne({
     where: {
-      id: id
+      id: id,
     },
     relations: {
-      property: true
-    }
-  })
+      property: true,
+    },
+  });
   if (userApplication) return userApplication;
   else return [];
-}
+};
 
-export const userService = { 
+export const userService = {
   add,
   remove,
   findAll,
@@ -163,10 +132,8 @@ export const userService = {
   getFavourites,
   addFavourites,
   removeFavourites,
-  addRental,
-  removeRentalAdmin,
-  removeRental,
+  getRentalApplicationDetail,
   update,
   getRentalApplication,
-  getRentalApplicationById
+  getRentalApplicationById,
 };

@@ -44,7 +44,7 @@ propertyRouter.post(
   propertyController.rentalApplication
 );
 // Update the state of a rental application
-propertyRouter.post(
+propertyRouter.put(
   '/apply/:id/:state',
   isAuthenticated,
   isAdmin,

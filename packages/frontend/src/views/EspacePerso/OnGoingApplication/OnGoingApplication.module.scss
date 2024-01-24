@@ -1,19 +1,17 @@
 @import '../../../index.scss';
 
-.demandes {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.content {
+  max-width: 1000px;
 }
 
 .title {
   text-align: center;
   color: var(--textColor);
+  margin: 30px 0;
 }
+
 .card {
   width: 100%;
-  max-width: 800px;
-  margin: 30px auto;
   border-radius: 10px;
   background-color: var(--secondaryBackground);
   padding: 10px 20px;
@@ -37,5 +35,41 @@
 }
 
 .buttonApplication {
-  margin: auto;
+  margin: 30px auto;
+}
+
+.filesContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 25px;
+  margin: 20px 0;
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    .icon {
+      margin: 0 10px;
+      font-size: 40px;
+      color: var(--textColor);
+      transition: 0.2s ease;
+    }
+
+    p {
+      transition: 0.2s ease;
+      color: var(--textColor);
+    }
+
+    &:hover {
+      .icon {
+        color: var(--primaryColor);
+      }
+      p {
+        color: var(--primaryColor);
+      }
+    }
+  }
 }

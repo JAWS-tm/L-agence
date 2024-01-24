@@ -16,7 +16,7 @@ userRouter.delete(
 );
 
 // Rental management
-userRouter.post('/rental', isAuthenticated, userController.addRental);
+userRouter.post('/rental/accept', isAuthenticated, userController.acceptRental);
 userRouter.delete(
   '/rental/:userId/:propertyId',
   isAuthenticated,

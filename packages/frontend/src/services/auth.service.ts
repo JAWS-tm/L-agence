@@ -12,12 +12,9 @@ export type UserRegisteration = {
 
 const login = async (credentials: UserCredentials) => {
   let user: User | null = null;
-  await axiosClient
-    .post('/auth/login', credentials)
-    .then((res) => {
-      user = res.data.user;
-    })
-    .catch((err) => {});
+  await axiosClient.post('/auth/login', credentials).then((res) => {
+    user = res.data.user;
+  });
 
   return user;
 };
@@ -39,4 +36,8 @@ const getMe = async (): Promise<User | null> => {
   else return null;
 };
 
-export const authService = { login, logout, register, getMe };
+const contact = async (email: string, subject: string, message: string) => {
+  return axiosClient.post('/contact/', { email, subject, message });
+};
+
+export const authService = { login, logout, register, getMe, contact };

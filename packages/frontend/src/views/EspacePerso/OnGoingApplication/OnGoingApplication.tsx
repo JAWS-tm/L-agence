@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import styles from './OnGoingApplication.module.scss';
-import { propertyService } from '../../../services/property.service';
-import { useQuery } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { CONFIG } from '../../../utils/config';
-import Button from '../../../components/Button/Button';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { axiosClient } from '../../../services';
+import { useQuery } from 'react-query';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import Breadcrumb from '../../../components/Breadcrumb/Breadcrumb';
+import Button from '../../../components/Button/Button';
+import { propertyService } from '../../../services/property.service';
+import { CONFIG } from '../../../utils/config';
+import styles from './OnGoingApplication.module.scss';
 
 const OnGoingApplication: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
+  const [acceptLoading, setAcceptLoading] = useState(false);
 
-  const { data: application } = useQuery({
+  const { data: application, isLoading: applicationLoading } = useQuery({
     enabled: !!params.id,
     queryKey: ['application', params.id],
     queryFn: () => propertyService.getUserApplicationById(params.id! || ''),
@@ -27,70 +27,84 @@ const OnGoingApplication: React.FC = () => {
   });
 
   const handleSubmit = async () => {
+    if (!application) return;
     try {
-      const backendUrl = 'http://localhost:3000/api/user/rental';
-      setLoading(true);
-      await axiosClient.post(backendUrl, { id: application?.data[0].id });
-      setLoading(false);
+      setAcceptLoading(true);
+      await propertyService.acceptProperty(application.id);
+      setAcceptLoading(false);
 
-      toast.success('Vous êtes maintenant locataire de logement');
+      toast.success(
+        `Vous êtes maintenant locataire du logement : ${application.property.name}`
+      );
+      navigate('/my-account');
     } catch (error) {
-      console.error("Erreur lors de l'envoi de la requête :", error);
-      toast.error("Erreur vous n'êtes pas loacataire");
-      setLoading(false);
+      toast.error("Votre acceptation n'a pas pu être prise en compte");
+      setAcceptLoading(false);
     }
   };
 
+  if (applicationLoading) return <p>Chargement...</p>;
+
+  if (!application) return <Navigate to={'/'} />;
+
+  const breadcrumbLinks = [
+    { name: 'Mes candidatures', path: '/my-account' },
+    { name: application.property.name },
+  ];
+
   return (
-    <div className={styles.test}>
-      <h1 className={styles.title}>{application?.data[0].property.name}</h1>
+    <div className={styles.content}>
+      <Breadcrumb paths={breadcrumbLinks} />
+      <h1 className={styles.title}>{application.property.name}</h1>
       <div className={styles.card}>
         <p className={styles.label}>
           Message de présentation :
-          <span className={styles.value}>
-            {application?.data[0].motivationText}
-          </span>
+          <span className={styles.value}>{application.motivationText}</span>
         </p>
         <p className={styles.label}>
           Etat du dossier
           <span className={styles.value}>
-            {application?.data[0].state === 'pending'
+            {application.state === 'pending'
               ? 'En cours'
-              : application?.data[0].state === 'accepted'
+              : application.state === 'accepted'
                 ? 'Acceptée'
                 : null}
           </span>
         </p>
-        <div>
-          <a
-            target="_blank"
-            href={
-              CONFIG.PUBLIC_CONTENT_URL + '/' + application?.data[0].idCardPath
-            }>
-            <i className={`fa-regular fa-address-card ${styles.icon}`}></i>
-          </a>
-        </div>
-        <div>
-          <a
-            target="_blank"
-            href={
-              CONFIG.PUBLIC_CONTENT_URL +
-              '/' +
-              application?.data[0].proofOfAddressPath
-            }>
-            <i className={`fa-regular fa-address-book ${styles.icon}`}></i>
-          </a>
+
+        <p className={styles.label}>Fichiers joints</p>
+        <div className={styles.filesContainer}>
+          <div>
+            <a
+              target="_blank"
+              href={CONFIG.PUBLIC_CONTENT_URL + '/' + application.idCardPath}>
+              <i className={`fa-regular fa-address-card ${styles.icon}`}></i>
+              <p>Carte d'identité</p>
+            </a>
+          </div>
+          <div>
+            <a
+              target="_blank"
+              href={
+                CONFIG.PUBLIC_CONTENT_URL + '/' + application.proofOfAddressPath
+              }>
+              <i className={`fa-regular fa-address-book ${styles.icon}`}></i>
+              <p>Justificatif de domicile</p>
+            </a>
+          </div>
         </div>
       </div>
       <div>
-        <Button
-          type="primary"
-          actionType="submit"
-          value="Accepter le logement"
-          onClick={() => handleSubmit()}
-          loading={loading}
-          className={styles.buttonApplication}
-        />
+        {application.state === 'accepted' && (
+          <Button
+            type="primary"
+            actionType="submit"
+            value="Accepter le logement"
+            onClick={() => handleSubmit()}
+            loading={acceptLoading}
+            className={styles.buttonApplication}
+          />
+        )}
       </div>
     </div>
   );
