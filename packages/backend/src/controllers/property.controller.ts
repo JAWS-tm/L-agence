@@ -44,12 +44,8 @@ const create = async (req: UserRequest, res: Response) => {
 };
 
 const update = async (req: UserRequest, res: Response) => {
-  console.log(req.body);
-
   const propertyId = req.params.id;
   if (!propertyId) return res.status(400).json({ status: 400 });
-
-  console.log('propertyId', propertyId);
 
   const property = await propertyService.findById(propertyId);
   if (!property)
@@ -58,14 +54,11 @@ const update = async (req: UserRequest, res: Response) => {
   const data = validateRequest(updatePropertySchema, req.body, res);
   if (!data) return;
 
-  console.log('Update property', property);
-
   try {
     const propertyToUpdate = Property.create({
       ...property,
       ...data, // This will override the property's fields with the data's fields
     });
-    console.log(propertyToUpdate);
 
     await propertyService.update(propertyToUpdate);
   } catch (error) {
