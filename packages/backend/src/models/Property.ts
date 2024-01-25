@@ -47,8 +47,9 @@ export class Property extends BaseEntity {
   @OneToOne(() => User, (user) => user.rentedProperty, {
     nullable: true, // Permet à tenant d'être null
     onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
   })
-  tenant: User | null;
+  tenant?: User | null;
 }
 
 export type PropertyType = Omit<Property, keyof BaseEntity>;

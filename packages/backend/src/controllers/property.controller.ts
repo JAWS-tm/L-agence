@@ -1,19 +1,18 @@
-import { propertyService } from '../services/property.service';
-import { UserRequest } from '../types/express';
-import { NextFunction, Request, Response } from 'express';
 import { instanceToPlain } from 'class-transformer';
+import { Request, Response } from 'express';
+import { Property } from '../models/Property';
+import { mailerService } from '../services/mail.service';
+import { propertyService } from '../services/property.service';
+import { rentalApplicationService } from '../services/rentalApplication.service';
+import { userService } from '../services/user.service';
+import { UserRequest } from '../types/express';
+import { checkFile } from '../utils/file';
 import { validateRequest } from '../validation';
 import {
   addPropertySchema,
   applySchema,
   updatePropertySchema,
 } from '../validation/property';
-import { checkFile, deleteFiles } from '../utils/file';
-import { Property } from '../models/Property';
-import { rentalApplicationService } from '../services/rentalApplication.service';
-import { mailerService } from '../services/mail.service';
-import { userService } from '../services/user.service';
-import path from 'path';
 
 const create = async (req: UserRequest, res: Response) => {
   if (!req.files) {
@@ -50,26 +49,28 @@ const update = async (req: UserRequest, res: Response) => {
   const propertyId = req.params.id;
   if (!propertyId) return res.status(400).json({ status: 400 });
 
+  console.log('propertyId', propertyId);
+
   const property = await propertyService.findById(propertyId);
-  if (!property) return res.status(404).json({ status: 404 });
+  if (!property)
+    return res.status(404).json({ status: 404, message: 'Property not found' });
 
   const data = validateRequest(updatePropertySchema, req.body, res);
   if (!data) return;
 
   console.log('Update property', property);
 
-  console.log({
-    ...property,
-    ...data, // This will override the property's fields with the data's fields
-  });
-
   try {
     const propertyToUpdate = Property.create({
       ...property,
       ...data, // This will override the property's fields with the data's fields
     });
+    console.log(propertyToUpdate);
+
     await propertyService.update(propertyToUpdate);
   } catch (error) {
+    console.log('Error', error);
+
     return res.json({ status: 400, message: error.message });
   }
 

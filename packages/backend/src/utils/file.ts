@@ -54,7 +54,7 @@ export const checkFile = (
       status: 400,
       message: `File ${
         file.originalname
-      } is not an image. Accepted formats are: ${ACCEPTED_MIME_TYPES.join(
+      } is not an ${type}. Accepted formats are: ${ACCEPTED_MIME_TYPES.join(
         ', '
       )}`,
     });

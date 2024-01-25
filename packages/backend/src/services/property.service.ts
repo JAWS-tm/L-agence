@@ -1,7 +1,7 @@
 // Property Service
 
 import { DeepPartial } from 'typeorm';
-import { Property, PropertyType } from '../models/Property';
+import { Property } from '../models/Property';
 import { AppError } from '../utils/error';
 
 const add = async (property: DeepPartial<Property>) => {
@@ -22,7 +22,12 @@ const update = async (property: Property) => {
     throw new AppError('Cannot update a property that does not exist');
   }
 
-  return await Property.update(property.id!, property);
+  if (property.tenant) delete property.tenant;
+
+  console.log('okkkkk', property);
+
+  property = Property.merge(propertyExists, property);
+  return await Property.save(property);
 };
 
 const remove = async (propertyId: string) => {
