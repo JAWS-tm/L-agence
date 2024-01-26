@@ -90,7 +90,7 @@ const acceptProperty = async (applicationId: string) => {
 };
 
 const leaveProperty = async () => {
-  return await axiosClient.post(`/user/rental`);
+  return await axiosClient.delete(`/user/rental`);
 };
 
 export const propertyService = {
