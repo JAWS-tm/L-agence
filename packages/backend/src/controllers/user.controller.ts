@@ -76,7 +76,7 @@ const removeFavourites = async (req: UserRequest, res: Response) => {
 };
 
 const acceptRental = async (req: UserRequest, res: Response) => {
-  const { rentalAppId } = req.body;
+  const rentalAppId = req.body.id;
   const user = req.user;
 
   const rentalApplication = await userService.getRentalApplicationDetail(
