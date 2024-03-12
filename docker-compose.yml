@@ -29,7 +29,7 @@ services:
     volumes:
       - pictures:/app/public/uploads
     ports:
-      - '3000:3000'
+      - 3000:3000
 
   frontend:
     restart: unless-stopped
@@ -38,7 +38,7 @@ services:
       dockerfile: docker/Dockerfile.frontend
     image: lagence-frontend
     ports:
-      - '8090:80'
+      - 8095:80
 
 volumes:
   database:
