@@ -15,7 +15,7 @@ export class Property extends BaseEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column('text')
   description?: string;
 
   @Column()
