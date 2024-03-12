@@ -26,6 +26,8 @@ services:
       context: .
       dockerfile: docker/Dockerfile.backend
     image: lagence-backend
+    volumes:
+      - pictures:/app/public/uploads
     ports:
       - '3000:3000'
 
@@ -40,3 +42,4 @@ services:
 
 volumes:
   database:
+  pictures:
