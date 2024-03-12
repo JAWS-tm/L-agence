@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    restart: unless-stopped
+    volumes:
+      - database:/var/lib/mysql
+    environment:
+      MYSQL_USER: lagence
+      MYSQL_PASSWORD: 17Lagence*
+      MYSQL_DATABASE: lagence
+      MYSQL_ROOT_PASSWORD: 17Lagence*root
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 2s
+      timeout: 20s
+      retries: 10
+
+  backend:
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    image: lagence-backend
+    ports:
+      - '3000:3000'
+
+  frontend:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    image: lagence-frontend
+    ports:
+      - '8090:80'
+
+volumes:
+  database:

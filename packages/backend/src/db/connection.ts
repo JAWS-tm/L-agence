@@ -29,7 +29,8 @@ export const initializeDatabase = async () => {
       `Database connection success. Database: '${conn.options.database}'`
     );
   } catch (err) {
-    console.error('Database connection error: ', err);
+    console.error('Database connection error');
+    return Promise.reject(err);
   }
 };
 
