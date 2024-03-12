@@ -4,8 +4,8 @@ const DEV_CONFIG = {
 };
 
 const PROD_CONFIG = {
-  API_URL: 'http://lagence.fr:3000/api',
-  PUBLIC_CONTENT_URL: 'http://lagence.fr:3000',
+  API_URL: 'https://lagence.jules-dempt.com/api',
+  PUBLIC_CONTENT_URL: 'https://lagence.jules-dempt.com/resources',
 };
 
 export const CONFIG =
