@@ -2,8 +2,6 @@ import 'dotenv/config';
 import app from './app';
 import { initializeDatabase } from './db/connection';
 
-console.log('Process env : ', JSON.stringify(process.env));
-
 /**
  * Start Database.
  */

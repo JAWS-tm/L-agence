@@ -79,6 +79,7 @@ jobs:
             cd services/lagence
             docker compose down
 
+            eval 'ssh-agent -s'
             ssh-add ~/.ssh/github
             git pull
 
