@@ -29,7 +29,7 @@ jobs:
          
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -54,12 +54,32 @@ jobs:
           context: .
           file: docker/Dockerfile.${{ matrix.image }}
           push: true
-          #tags: ghcr.io/${{ github.repository }}/lagence-back:latest
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-    
-    #- uses: actions/checkout@v3
-    #- name: Build the Docker image
-    #  run: docker build . --file docker/Dockerfile.frontend --tag my-image-name:$(date +%s)
+
+  deploy: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Docker Compose
+        uses: appleboy/ssh-action@v1.0.3
+        #env:
+          #FOO: "BAR"
+          #BAR: "FOO"
+          #SHA: ${{ github.sha }}
+        with:
+          host: ${{ secrets.SSH_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          #envs: FOO,BAR,SHA
+          script: |
+            cd services/lagence
+            docker compose down
+
+            git pull
+
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+
+            docker compose up -d 
