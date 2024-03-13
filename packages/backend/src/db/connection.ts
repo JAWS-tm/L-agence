@@ -22,8 +22,6 @@ const AppDataSource = new DataSource({
 });
 
 export const initializeDatabase = async () => {
-  console.log('Process env : ', JSON.stringify(process.env));
-
   try {
     const conn = await AppDataSource.initialize();
 
