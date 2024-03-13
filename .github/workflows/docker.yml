@@ -79,8 +79,8 @@ jobs:
             cd services/lagence
             docker compose down
 
-            eval 'ssh-agent -s'
-            ssh-add ~/.ssh/github
+            eval $(ssh-agent -s)
+            cat ~/.ssh/github | ssh-add -
             git pull
 
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
