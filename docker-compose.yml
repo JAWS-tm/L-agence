@@ -22,10 +22,19 @@ services:
       mariadb:
         condition: service_healthy
     restart: unless-stopped
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.backend
-    image: lagence-backend
+    # build:
+    #   context: .
+    #   dockerfile: docker/Dockerfile.backend
+    # image: lagence-backend
+    image: ghcr.io/jaws-tm/l-agence/backend:master
+    environment:
+      DB_HOST: mariadb
+      DB_USER: lagence
+      DB_PASSWORD: 17Lagence*
+      DB_NAME: lagence
+      MAILER_EMAIL: xxx@gmail.com
+      MAILER_PASSWORD: 'xxx'
+      FRONTEND_URL: https://lagence.jules-dempt.com
     volumes:
       - pictures:/app/public/uploads
     ports:
@@ -33,10 +42,11 @@ services:
 
   frontend:
     restart: unless-stopped
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.frontend
-    image: lagence-frontend
+    # build:
+    #   context: .
+    #   dockerfile: docker/Dockerfile.frontend
+    # image: lagence-frontend
+    image: ghcr.io/jaws-tm/l-agence/frontend:master
     ports:
       - 8095:80
 
