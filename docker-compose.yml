@@ -29,7 +29,7 @@ services:
     image: ghcr.io/jaws-tm/l-agence/backend:master
     environment:
       DB_HOST: mariadb
-      DB_USER: lagence
+      DB_USERNAME: lagence
       DB_PASSWORD: 17Lagence*
       DB_NAME: lagence
       MAILER_EMAIL: xxx@gmail.com
