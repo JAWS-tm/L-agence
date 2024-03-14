@@ -73,7 +73,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: ./docker-compose.yml
-          target: ~/services/lagence
+          target: ${{ secrets.SSH_DEPLOY_PATH }}
           overwrite: true
 
       - name: Deploy Docker Compose
@@ -84,7 +84,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd ~/services/lagence
+            cd ${{ secrets.SSH_DEPLOY_PATH }}
 
             docker compose down
 
