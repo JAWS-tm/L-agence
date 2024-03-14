@@ -75,7 +75,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: ./docker-compose.yml
-          target: ~/services/lagence/docker-compose.yml
+          target: ~/services/lagence/
 
       - name: Deploy Docker Compose
         uses: appleboy/ssh-action@v1.0.3
