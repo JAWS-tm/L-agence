@@ -7,10 +7,10 @@ services:
     volumes:
       - database:/var/lib/mysql
     environment:
-      MYSQL_USER: lagence
-      MYSQL_PASSWORD: 17Lagence*
-      MYSQL_DATABASE: lagence
-      MYSQL_ROOT_PASSWORD: 17Lagence*root
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       interval: 2s
@@ -18,38 +18,45 @@ services:
       retries: 10
 
   backend:
-    depends_on:
-      mariadb:
-        condition: service_healthy
-    restart: unless-stopped
     # build:
     #   context: .
     #   dockerfile: docker/Dockerfile.backend
     # image: lagence-backend
     image: ghcr.io/jaws-tm/l-agence/backend:master
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    restart: unless-stopped
     environment:
-      DB_HOST: mariadb
-      DB_USERNAME: lagence
-      DB_PASSWORD: 17Lagence*
-      DB_NAME: lagence
-      MAILER_EMAIL: xxx@gmail.com
-      MAILER_PASSWORD: 'xxx'
-      FRONTEND_URL: https://lagence.jules-dempt.com
+      DB_HOST: ${DB_HOST}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PORT: ${DB_PORT}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      MAILER_EMAIL: ${MAILER_EMAIL}
+      MAILER_PASSWORD: ${MAILER_PASSWORD}
+      FRONTEND_URL: ${SITE_URL}
     volumes:
       - pictures:/app/public/uploads
-    ports:
-      - 3000:3000
+      - sessions:/app/sessions
+    #ports:
+    #  - 3000:3000
 
   frontend:
-    restart: unless-stopped
     # build:
     #   context: .
     #   dockerfile: docker/Dockerfile.frontend
     # image: lagence-frontend
     image: ghcr.io/jaws-tm/l-agence/frontend:master
+    depends_on:
+      - backend
+    restart: unless-stopped
+    environment:
+      - API_URL=${SITE_URL}
     ports:
-      - 8095:80
+      - 80:80
 
 volumes:
   database:
   pictures:
+  sessions:

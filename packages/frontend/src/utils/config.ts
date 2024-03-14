@@ -3,9 +3,10 @@ const DEV_CONFIG = {
   PUBLIC_CONTENT_URL: 'http://localhost:3000',
 };
 
+const SITE_URL = process.env.SITE_URL || 'http://unknown';
 const PROD_CONFIG = {
-  API_URL: 'https://lagence.jules-dempt.com/api',
-  PUBLIC_CONTENT_URL: 'https://lagence.jules-dempt.com/resources',
+  API_URL: `${SITE_URL}/api`,
+  PUBLIC_CONTENT_URL: `${SITE_URL}/resources`,
 };
 
 export const CONFIG =
