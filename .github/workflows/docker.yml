@@ -8,7 +8,6 @@ on:
   workflow_dispatch:
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
 
 jobs:
@@ -17,9 +16,8 @@ jobs:
     permissions:
       contents: read
       packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
       id-token: write
+    # Run the job for both backend and frontend
     strategy:
       matrix:
         image: ['backend', 'frontend']
@@ -75,7 +73,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: ./docker-compose.yml
-          target: ~/services/lagence/
+          target: ~/services/lagence
+          overwrite: true
 
       - name: Deploy Docker Compose
         uses: appleboy/ssh-action@v1.0.3
@@ -90,5 +89,5 @@ jobs:
             docker compose down
 
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
-            docker pull 
+            docker compose pull 
             docker compose up -d
