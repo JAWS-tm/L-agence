@@ -18,10 +18,9 @@ services:
       retries: 10
 
   backend:
-    # build:
-    #   context: .
-    #   dockerfile: docker/Dockerfile.backend
-    # image: lagence-backend
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
     image: ghcr.io/jaws-tm/l-agence/backend:master
     depends_on:
       mariadb:
@@ -39,20 +38,15 @@ services:
     volumes:
       - pictures:/app/public/uploads
       - sessions:/app/sessions
-    #ports:
-    #  - 3000:3000
 
   frontend:
-    # build:
-    #   context: .
-    #   dockerfile: docker/Dockerfile.frontend
-    # image: lagence-frontend
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
     image: ghcr.io/jaws-tm/l-agence/frontend:master
     depends_on:
       - backend
     restart: unless-stopped
-    environment:
-      - API_URL=${SITE_URL}
     ports:
       - ${PROXY_PORT}:80
 
